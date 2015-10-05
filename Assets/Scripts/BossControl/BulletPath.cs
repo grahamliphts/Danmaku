@@ -11,19 +11,27 @@ public class BulletPath : MonoBehaviour
 
     void Start()
     {
-        reset();
+        m_direction = Random.Range(0, 360);
+        //m_position = transform.position;
+        transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
+        gameObject.SetActive(false);
     }
 
     void Update()
     {
         transform.Translate(Vector3.right * Time.deltaTime * speed);
+        var pos = Camera.main.WorldToViewportPoint(transform.position);
+        Debug.Log(pos.x);
+        if (pos.x >= 1 || pos.y >= 1 || pos.x <= 0 || pos.y <= 0)
+            reset();
     }
 
-    public void reset()
+    void reset()
     {
         m_direction = Random.Range(0, 360);
-        //m_position = transform.position;
+        transform.position = new Vector3(0, 3, 0);
         transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
+        gameObject.SetActive(false);
     }
 
 }
