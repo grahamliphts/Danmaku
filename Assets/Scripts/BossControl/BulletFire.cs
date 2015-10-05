@@ -7,6 +7,7 @@ public class BulletFire : MonoBehaviour
     private float m_timmer;
     private BulletPath[] m_Bullets_Script;
     private int m_direction;
+    private uint m_mode = 1;
 
 
     void Start()
@@ -18,24 +19,21 @@ public class BulletFire : MonoBehaviour
             bullets[j].SetActive(false);
             m_Bullets_Script[j] = bullets[j].GetComponent<BulletPath>();
             //Debug.Log("Instantiating");
+            launchCoroutine();
         }
 
         m_timmer = Time.time;
     }
 
-    void Update()
+    /*void Update()
     {
 
         if (Time.time - m_timmer > 0.5)
         {
-            //StartCoroutine(circleSpin(0,bullets.Length));
-            //StartCoroutine(doubleSpin(bullets.Length,0));
-            //StartCoroutine(crossFire(bullets.Length,0));
-            //StartCoroutine(starFire(bullets.Length, 0));
-            //StartCoroutine(twinFire(bullets.Length, 0));
+            launchCoroutine();
             m_timmer = Time.time;
         }
-    }
+    }*/
 
     IEnumerator circleSpin(int max,int spawn = 0)
     {
@@ -205,5 +203,91 @@ public class BulletFire : MonoBehaviour
         }
     }
 
+    public void changeMode(uint mode)
+    {
+        switch (mode)
+        {
+            case 1:
+                stopCurrentCoroutine();
+                m_mode = 1;
+                launchCoroutine();
+                break;
+            case 2:
+                stopCurrentCoroutine();
+                m_mode = 2;
+                launchCoroutine();
+                break;
+            case 3:
+                stopCurrentCoroutine();
+                m_mode = 3;
+                launchCoroutine();
+                break;
+            case 4:
+                stopCurrentCoroutine();
+                m_mode = 4;
+                launchCoroutine();
+                break;
+            case 5:
+                stopCurrentCoroutine();
+                m_mode = 5;
+                launchCoroutine();
+                break;
+            default:
+                stopCurrentCoroutine();
+                m_mode = 1;
+                launchCoroutine();
+                break;
+        }
+    }
+
+    void launchCoroutine()
+    {
+        switch (m_mode)
+        {
+            case 1:
+                StartCoroutine(circleSpin(bullets.Length));
+                break;
+            case 2:
+                StartCoroutine(doubleSpin(bullets.Length));
+                break;
+            case 3:
+                StartCoroutine(crossFire(bullets.Length));
+                break;
+            case 4:
+                StartCoroutine(starFire(bullets.Length));
+                break;
+            case 5:
+                StartCoroutine(twinFire(bullets.Length));
+                break;
+            default:
+                StartCoroutine(circleSpin(bullets.Length,0));
+                break;
+        }
+    }
+
+    void stopCurrentCoroutine()
+    {
+        switch (m_mode)
+        {
+            case 1:
+                StopCoroutine(circleSpin(bullets.Length));
+                break;
+            case 2:
+                StopCoroutine(doubleSpin(bullets.Length));
+                break;
+            case 3:
+                StopCoroutine(crossFire(bullets.Length));
+                break;
+            case 4:
+                StopCoroutine(starFire(bullets.Length));
+                break;
+            case 5:
+                StopCoroutine(twinFire(bullets.Length));
+                break;
+            default:
+                StopCoroutine(circleSpin(bullets.Length, 0));
+                break;
+        }
+    }
 
 }
