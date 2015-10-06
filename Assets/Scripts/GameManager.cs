@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
             bossControl.changeMode(4);
         if (Input.GetButtonDown("TwinFire"))
             bossControl.changeMode(5);
-	}
+        if (Input.GetButtonDown("MouseFire"))
+            bossControl.changeMode(6);
+    }
 }
  

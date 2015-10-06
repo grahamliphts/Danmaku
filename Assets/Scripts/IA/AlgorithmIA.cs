@@ -49,7 +49,7 @@ public class AlgorithmIA : MonoBehaviour
             foreach (int idActive in _idBulletsActive)
             {
                 Entity.EntityStruct actualBullet = worldState.GetEntity(idActive);
-                Debug.Log(actualBullet.position);
+                //Debug.Log(actualBullet.position);
                 /*
                 int nbIter = PositionComparator(actualBullet.__WorldState.entities[idActive].d, idActive, 2);
                 if (nbIter != -1)
