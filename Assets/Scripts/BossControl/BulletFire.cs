@@ -87,6 +87,48 @@ public class BulletFire : MonoBehaviour
         }
     }
 
+
+    IEnumerator doubleSpin(int max, Shoot shoot, int spawn = 0)
+    {
+        bool isright = true;
+        while (true)
+        {
+            if (spawn >= max)
+                spawn = 0;
+            if (bullets[spawn].activeSelf == false)
+            {
+                if (spawn % 2 == 0)
+                {
+                    bullets[spawn].transform.position = new Vector3(0, 0, 0);
+                    bullets[spawn].SetActive(true);
+                    m_Bullets_Script[spawn].play(m_direction);
+
+
+                    spawn++;
+                }
+                else
+                {
+                    bullets[spawn].transform.position = new Vector3(0, 0, 0);
+                    bullets[spawn].SetActive(true);
+                    m_Bullets_Script[spawn].play(m_direction + 30 );
+                    spawn++;
+                }
+                if (m_direction < 360 && isright)
+                {
+                   m_direction += 5;
+                }
+                else
+                {
+                    isright = false;
+                    m_direction -= 5;
+                    if (m_direction < 160)
+                        isright = true;
+                }
+            }
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
     public void changeMode(uint mode)
     {
         StopAllCoroutines();
@@ -96,7 +138,7 @@ public class BulletFire : MonoBehaviour
                 StartCoroutine(circleSpin(bullets.Length));
                 break;
             case 2:
-                StartCoroutine(patternFire(bullets.Length, Shoot.Double));
+                StartCoroutine(doubleSpin(bullets.Length, Shoot.Double));
                 break;
             case 3:
                 StartCoroutine(patternFire(bullets.Length, Shoot.Cross));
