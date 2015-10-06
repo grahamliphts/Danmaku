@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class GraphState : MonoBehaviour
 {
     WorldState[] worldStates;
@@ -14,6 +15,7 @@ public class GraphState : MonoBehaviour
         {
             worldStates[i] = Step(worldsStates[i - 1]);
         }*/
+
     }
 
     void FixedUpdate()
@@ -21,14 +23,17 @@ public class GraphState : MonoBehaviour
         //worldStates[20] = Step(worldStates[19]);
     }
 
-    public static Entity.EntityStruct[] Step(Entity.EntityStruct[] entitiesStruct, float time)
+    /*public static Entity.EntityStruct[] Step(Entity.EntityStruct[] entitiesStruct, float time)
     {
         for (int i = 1; i < entitiesStruct.Length; i++)
         {
 
-           entitiesStruct[i].position += (Vector2)Vector3.right * time * entitiesStruct[i].angle;//(Vector2)(Vector3.right * entitiesStruct[i].speed * time);
+            //
+            Vector2 Angle = Quaternion.AngleAxis(entitiesStruct[i].angle, Vector3.forward) * Vector3.right;     
+            entitiesStruct[i].position += Angle * time;
+           // entitiesStruct[i].position += (Vector2)Vector3.right * time;//(Vector2)(Vector3.right * entitiesStruct[i].speed * time);
         }
 
         return entitiesStruct;
-    }
+    }*/
 }

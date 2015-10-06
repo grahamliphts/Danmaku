@@ -6,6 +6,8 @@ public class BulletPath : Entity
     private int m_direction;
     public int speed = 1;
     public ushort id = 0;
+    public WorldState __WorldState;
+    
 
 
     void Start()
@@ -17,13 +19,13 @@ public class BulletPath : Entity
 
     void Update()
     {
-      /*  Debug.Log("Before : " + transform.position);
+     //  Debug.Log("Before : " + transform.position);
         transform.Translate(Vector3.right * Time.deltaTime * speed);
-        Debug.Log("After : " + transform.position);
-        Debug.Log("Vector right" + Vector3.right);*/
-        var pos = Camera.main.WorldToViewportPoint(transform.position);
+        __WorldState.updateEntitie(transform.position, Vector3.right, transform.rotation, EID, gameObject.activeSelf, speed);
+    var pos = Camera.main.WorldToViewportPoint(transform.position);
         if (pos.x >= 1 || pos.y >= 1 || pos.x <= 0 || pos.y <= 0)
             reset();
+        //Debug.Log(EID);
     }
 
     public void reset()
@@ -36,10 +38,16 @@ public class BulletPath : Entity
 
     public void play(int direction)
     {
-      /*  m_direction = Random.Range(0, 360);
+        m_direction = Random.Range(0, 360);
         gameObject.SetActive(true);
         transform.position = new Vector3(0, 3, 0);
-        transform.rotation = Quaternion.AngleAxis(direction, new Vector3(0, 0, 1));*/
+        transform.rotation = Quaternion.AngleAxis(direction, new Vector3(0, 0, 1));
+        __WorldState.updateEntitie(transform.position, Vector3.right, transform.rotation, EID, gameObject.activeSelf, speed);
+    }
+
+    public void setEID( int eid)
+    {
+        EID = eid;
     }
 
 }

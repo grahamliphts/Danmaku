@@ -3,33 +3,40 @@ using System.Collections;
 
 public class Entity : MonoBehaviour
 {
-    int _speed = 1;
-
-	public struct EntityStruct
+    int _speed;
+    public int EID;
+    public struct EntityStruct
     {
-        public Vector2 position;
+        public Vector3 position;
         public int speed;
         public bool isActive;
-        public float angle;
+        public Vector3 direction;
+        public Quaternion rotation;
+        public int ID;
     }
 
-    public virtual void SetStruct(EntityStruct es)
+    /*public virtual void SetStruct(EntityStruct es)
     {
 
         transform.position = es.position;
         _speed = es.speed;
         transform.rotation = Quaternion.AngleAxis(es.angle, Vector3.right);
         gameObject.SetActive(es.isActive);
-    }
+    }*/
 
-    public virtual EntityStruct CreateStruct()
+    public virtual EntityStruct CreateStruct(Vector3 position,Vector3 ADirection,int EID, bool isactive)
     {
         var es = new EntityStruct();
-        es.position = transform.position;
+        es.position = position;
         es.speed = _speed;
-        es.isActive = gameObject.activeSelf;
-        es.angle = transform.localRotation.eulerAngles.z;
+        es.isActive = isactive;
+        es.direction = ADirection;
+        es.ID = EID;
+        //es.angle = transform.localRotation.eulerAngles.z;
+        //es.angle =  Random.Range(0, 360);
 
         return es;
     }
+
+    
 }
