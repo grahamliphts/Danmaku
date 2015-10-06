@@ -20,10 +20,14 @@ public class BulletPath : Entity
 
     void Update()
     {
-     //  Debug.Log("Before : " + transform.position);
-        transform.Translate(Vector3.right * Time.deltaTime * speed);
-        __WorldState.updateEntitie(transform.position, Vector3.right, transform.rotation, EID, gameObject.activeSelf, speed);
-    var pos = Camera.main.WorldToViewportPoint(transform.position);
+        //  Debug.Log("Before : " + transform.position);
+        //transform.Translate(Vector3.right * Time.deltaTime * speed);
+        
+        Vector3 dirVector = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1)) * Vector3.up;
+        transform.Translate(dirVector * Time.deltaTime * speed);
+
+        __WorldState.updateEntitie(transform.position, dirVector, transform.rotation, EID, gameObject.activeSelf, speed);
+        var pos = Camera.main.WorldToViewportPoint(transform.position);
         if (pos.x >= 1 || pos.y >= 1 || pos.x <= 0 || pos.y <= 0)
             reset();
         //Debug.Log(EID);
@@ -39,11 +43,13 @@ public class BulletPath : Entity
 
     public void play(int direction)
     {
-        m_direction = Random.Range(0, 360);
+        m_direction = direction;
         gameObject.SetActive(true);
         transform.position = Boss.transform.position;
-        transform.rotation = Quaternion.AngleAxis(direction, new Vector3(0, 0, 1));
-        __WorldState.updateEntitie(transform.position, Vector3.right, transform.rotation, EID, gameObject.activeSelf, speed);
+        transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
+        Vector3 dirVector = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1)) * Vector3.up;
+        transform.Translate(dirVector * Time.deltaTime * speed);
+        __WorldState.updateEntitie(transform.position, dirVector, transform.rotation, EID, gameObject.activeSelf, speed);
     }
 
     public void setEID( int eid)
