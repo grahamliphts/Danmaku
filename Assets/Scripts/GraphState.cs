@@ -25,9 +25,8 @@ public class GraphState : MonoBehaviour
     {
         for (int i = 1; i < entitiesStruct.Length; i++)
         {
-            
 
-           // entitiesStruct[i].position += Vector3.right * time;//(Vector2)(Vector3.right * entitiesStruct[i].speed * time);
+           entitiesStruct[i].position += (Vector2)Vector3.right * time * entitiesStruct[i].angle;//(Vector2)(Vector3.right * entitiesStruct[i].speed * time);
         }
 
         return entitiesStruct;
