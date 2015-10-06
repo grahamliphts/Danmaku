@@ -5,6 +5,7 @@ public class Entity : MonoBehaviour
 {
     int _speed;
     public int EID;
+
     public struct EntityStruct
     {
         public Vector3 position;

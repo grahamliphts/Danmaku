@@ -54,6 +54,19 @@ public class WorldState : MonoBehaviour
                 }*/
             }
         }
-        
+    }
+
+    public Entity.EntityStruct GetEntity(int EID)
+    {
+        Entity.EntityStruct result = new Entity.EntityStruct();
+        for (int i = 0; i < entitiesStruct.Length; i++)
+        {
+            if (entitiesStruct[i].ID == EID)
+            {
+                result = entitiesStruct[i];
+            }
+        }
+        return result;
     }
 }
+ 

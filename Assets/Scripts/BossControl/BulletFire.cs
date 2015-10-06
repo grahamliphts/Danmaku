@@ -17,7 +17,6 @@ public class BulletFire : MonoBehaviour
         for (ushort j = 0; j < bullets.Length; j++)
         {
             m_Bullets_Script[j] = bullets[j].GetComponent<BulletPath>();
-            m_Bullets_Script[j].id = j;
         }
         changeMode(1);
     }
