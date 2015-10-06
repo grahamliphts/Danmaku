@@ -40,7 +40,6 @@ public class PlayerShoot : MonoBehaviour
                 _count = 0;
             if (projPlayer[_count].activeSelf == false)
             {
-                Debug.Log("activate");
                 Debug.Log(projPlayer[_count]);
                 projPlayerScript[_count].play();
                 _count++;

@@ -14,8 +14,9 @@ public class BossLife : MonoBehaviour
         _life = 100;
     }
 
-    void OnCollisionEnter2D(Collision2D col)
+    void OnTriggerEnter2D(Collider2D col)
     {
+        Debug.Log("TriggerEnter");
         //does not work now // create a taf for players shoot
         if (col.gameObject.tag == "projPlayer")
         {
