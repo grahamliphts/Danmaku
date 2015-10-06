@@ -48,7 +48,12 @@ public class BulletPath : Entity
         transform.position = Boss.transform.position;
         transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
         Vector3 dirVector = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1)) * Vector3.up;
-        transform.Translate(dirVector * Time.deltaTime * speed);
+
+        Vector3 _direction = new Vector3(transform.position.x + Mathf.Cos(m_direction * Mathf.PI / 180.0f), transform.position.y + Mathf.Sin(m_direction * Mathf.PI / 180.0f), 0);
+        Vector3 dir = _direction - transform.position;
+
+        Debug.DrawRay(transform.position, dir, Color.red);
+
         __WorldState.updateEntitie(transform.position, dirVector, transform.rotation, EID, gameObject.activeSelf, speed);
     }
 
