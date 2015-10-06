@@ -6,13 +6,16 @@ public class BulletFire : MonoBehaviour
     public GameObject[] bullets;
     private BulletPath[] m_Bullets_Script;
     private int m_direction;
+    enum Shoot { Double, Cross, Star, Twin};
+    [SerializeField]
+    private Pool _pool;
 
     void Start()
     {
+        bullets = _pool.items;
         m_Bullets_Script = new BulletPath[bullets.Length];
         for (ushort j = 0; j < bullets.Length; j++)
         {
-            bullets[j].SetActive(false);
             m_Bullets_Script[j] = bullets[j].GetComponent<BulletPath>();
             m_Bullets_Script[j].id = j;
         }
@@ -27,7 +30,6 @@ public class BulletFire : MonoBehaviour
                 spawn = 0;
             if (bullets[spawn].activeSelf == false)
             {
-                bullets[spawn].SetActive(false);
                 bullets[spawn].transform.position = new Vector3(0, 0, 0);
                 bullets[spawn].SetActive(true);
                 m_Bullets_Script[spawn].play(m_direction);
@@ -43,7 +45,7 @@ public class BulletFire : MonoBehaviour
         }
     }
 
-    IEnumerator doubleSpin(int max,int spawn = 0)
+    IEnumerator patternFire(int max, Shoot shoot, int spawn = 0)
     {
         while (true)
         {
@@ -53,7 +55,6 @@ public class BulletFire : MonoBehaviour
             {
                 if (spawn % 2 == 0)
                 {
-                    bullets[spawn].SetActive(false);
                     bullets[spawn].transform.position = new Vector3(0, 0, 0);
                     bullets[spawn].SetActive(true);
                     m_Bullets_Script[spawn].play(m_direction);
@@ -63,123 +64,22 @@ public class BulletFire : MonoBehaviour
                 }
                 else
                 {
-
-                    bullets[spawn].SetActive(false);
                     bullets[spawn].transform.position = new Vector3(0, 0, 0);
                     bullets[spawn].SetActive(true);
                     m_Bullets_Script[spawn].play(-m_direction);
                     spawn++;
                 }
                 if (m_direction < 360)
-                    m_direction += 5;
-                else
-                    m_direction = 0;
-            }
-            yield return new WaitForSeconds(0.01f);
-        }
-    }
-
-    IEnumerator crossFire(int max, int spawn = 0)
-    {
-        while (true)
-        {
-            if (spawn >= max)
-                spawn = 0;
-            if (bullets[spawn].activeSelf == false)
-            {
-                if (spawn % 2 == 0)
                 {
-                    bullets[spawn].SetActive(false);
-                    bullets[spawn].transform.position = new Vector3(0, 0, 0);
-                    bullets[spawn].SetActive(true);
-                    m_Bullets_Script[spawn].play(m_direction);
-
-
-                    spawn++;
+                    if(shoot == Shoot.Double)
+                        m_direction += 5;
+                    else if(shoot == Shoot.Cross)
+                        m_direction += 90;
+                    else if (shoot == Shoot.Star)
+                        m_direction += 45;
+                    else if (shoot == Shoot.Twin)
+                        m_direction += 50;
                 }
-                else
-                {
-
-                    bullets[spawn].SetActive(false);
-                    bullets[spawn].transform.position = new Vector3(0, 0, 0);
-                    bullets[spawn].SetActive(true);
-                    m_Bullets_Script[spawn].play(-m_direction);
-                    spawn++;
-                }
-                if (m_direction < 360)
-                    m_direction += 90;
-                else
-                    m_direction = 0;
-            }
-            yield return new WaitForSeconds(0.01f);
-        }
-    }
-
-    IEnumerator starFire(int max, int spawn = 0)
-    {
-        while (true)
-        {
-            if (spawn >= max)
-                spawn = 0;
-            if (bullets[spawn].activeSelf == false)
-            {
-                if (spawn % 2 == 0)
-                {
-                    bullets[spawn].SetActive(false);
-                    bullets[spawn].transform.position = new Vector3(0, 0, 0);
-                    bullets[spawn].SetActive(true);
-                    m_Bullets_Script[spawn].play(m_direction);
-
-
-                    spawn++;
-                }
-                else
-                {
-
-                    bullets[spawn].SetActive(false);
-                    bullets[spawn].transform.position = new Vector3(0, 0, 0);
-                    bullets[spawn].SetActive(true);
-                    m_Bullets_Script[spawn].play(-m_direction);
-                    spawn++;
-                }
-                if (m_direction < 360)
-                    m_direction += 45;
-                else
-                    m_direction = 0;
-            }
-            yield return new WaitForSeconds(0.01f);
-        }
-    }
-
-    IEnumerator twinFire(int max, int spawn = 0)
-    {
-        while (true)
-        {
-            if (spawn >= max)
-                spawn = 0;
-            if (bullets[spawn].activeSelf == false)
-            {
-                if (spawn % 2 == 0)
-                {
-                    bullets[spawn].SetActive(false);
-                    bullets[spawn].transform.position = new Vector3(0, 0, 0);
-                    bullets[spawn].SetActive(true);
-                    m_Bullets_Script[spawn].play(m_direction);
-
-
-                    spawn++;
-                }
-                else
-                {
-
-                    bullets[spawn].SetActive(false);
-                    bullets[spawn].transform.position = new Vector3(0, 0, 0);
-                    bullets[spawn].SetActive(true);
-                    m_Bullets_Script[spawn].play(-m_direction);
-                    spawn++;
-                }
-                if (m_direction < 360)
-                    m_direction += 50;
                 else
                     m_direction = 0;
             }
@@ -196,16 +96,16 @@ public class BulletFire : MonoBehaviour
                 StartCoroutine(circleSpin(bullets.Length));
                 break;
             case 2:
-                StartCoroutine(doubleSpin(bullets.Length));
+                StartCoroutine(patternFire(bullets.Length, Shoot.Double));
                 break;
             case 3:
-                StartCoroutine(crossFire(bullets.Length));
+                StartCoroutine(patternFire(bullets.Length, Shoot.Cross));
                 break;
             case 4:
-                StartCoroutine(starFire(bullets.Length));
+                StartCoroutine(patternFire(bullets.Length, Shoot.Star));
                 break;
             case 5:
-                StartCoroutine(twinFire(bullets.Length));
+                StartCoroutine(patternFire(bullets.Length, Shoot.Twin));
                 break;
             default:
                 StartCoroutine(circleSpin(bullets.Length,0));

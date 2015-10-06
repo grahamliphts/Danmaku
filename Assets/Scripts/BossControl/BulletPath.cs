@@ -31,19 +31,12 @@ public class BulletPath : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void stop()
-    {
-        gameObject.SetActive(false);
-        transform.position = new Vector3(0, 3, 0);
-    }
-
     public void play(int direction)
     {
         m_direction = Random.Range(0, 360);
         gameObject.SetActive(true);
         transform.position = new Vector3(0, 3, 0);
         transform.rotation = Quaternion.AngleAxis(direction, new Vector3(0, 0, 1));
-        
     }
 
 }
