@@ -9,12 +9,16 @@ public class EndGame : MonoBehaviour
     public Text closeInfo;
 
     public BossLife lifeBoss;
+    public PlayerLife lifePlayer;
 
     // Update is called once per frame
     void Update ()
     {
 	    if (lifeBoss.GetLife() <= 0)
             StartCoroutine("CloseParty", "You win");
+
+        else if(lifePlayer.GetLife() <= 0)
+            StartCoroutine("CloseParty", "Game over");
     }
 
     IEnumerator CloseParty(string text)

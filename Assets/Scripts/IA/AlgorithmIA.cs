@@ -101,7 +101,7 @@ public class AlgorithmIA : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D bullet)
     {
-        if(bullet.tag != "projPlayer")
+        if(bullet.tag == "projEnemy")
         {
             BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
             _idBulletsActive.Add(bulletScript.EID);

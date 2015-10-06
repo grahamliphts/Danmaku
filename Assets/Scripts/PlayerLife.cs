@@ -1,28 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BossLife : MonoBehaviour
-{
+public class PlayerLife : MonoBehaviour {
 
-    [SerializeField]
     private float _life;
-    [SerializeField]
     private int _damage;
 
     void Start()
     {
-        _life = 100;
+        _life = 1;
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        //does not work now // create a taf for players shoot
-        if (col.gameObject.tag == "projPlayer")
+        Debug.Log("trigger");
+        if (col.gameObject.tag == "projEnemy")
         {
+            Debug.Log("trigger2");
             if (_life > 0)
-                _life = _life - _damage;
+                _life = _life - 1;
         }
-       
+
     }
 
     public float GetLife()
