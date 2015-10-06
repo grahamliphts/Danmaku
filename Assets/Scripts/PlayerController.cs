@@ -24,24 +24,24 @@ public class PlayerController : MonoBehaviour
             MoveRight();
     }
 
-    void MoveUp()
+    public void MoveUp()
     {
-        transform.Translate((Vector2.up * _movementSpeed) * Time.deltaTime);
+        transform.Translate((Vector2.up * _movementSpeed) * 2);
     }
 
-    void MoveDown()
+    public void MoveDown()
     {
-        transform.Translate((-(Vector2.up) * _movementSpeed) * Time.deltaTime);
+        transform.Translate((-(Vector2.up) * _movementSpeed) * 2);
     }
 
-    void MoveLeft()
+    public void MoveLeft()
     {
-        transform.Translate((-(Vector2.right) * _movementSpeed) * Time.deltaTime);
+        transform.Translate((-(Vector2.right) * _movementSpeed) * 2);
     }
 
-    void MoveRight()
+    public void MoveRight()
     {
-        transform.Translate((Vector2.right * _movementSpeed) * Time.deltaTime);
+        transform.Translate((Vector2.right * _movementSpeed) * 2);
     }
 
 }

@@ -16,7 +16,10 @@ public class AlgorithmIA : MonoBehaviour
     public BulletPath[] bullets;
 
     [SerializeField]
-    public Transform _actualPosition;
+    public Transform actualPosition;
+
+    [SerializeField]
+    public PlayerController playerIA;
 
     //private bool[]  _idBulletsActive;
     private List<ushort> _idBulletsActive;
@@ -25,13 +28,18 @@ public class AlgorithmIA : MonoBehaviour
     private Vector3[] _bulletsPrePosition;
     private Vector3[] _bulletsActPosition;
 
+    private float[] _moveCallibration;
+
 	void Start ()
     {
         _nbBullets = bullets.Length;
 
+        _moveCallibration    = new float[4];
         _idBulletsActive     = new List<ushort>();
         _bulletsPrePosition  = new Vector3[_nbBullets];
         _bulletsActPosition  = new Vector3[_nbBullets];
+
+        IaCallibration();
 
         StartCoroutine(Sentry());
 	}
@@ -47,11 +55,10 @@ public class AlgorithmIA : MonoBehaviour
 
                 Vector3 Diff = _bulletsActPosition[idActive] - _bulletsPrePosition[idActive];
 
-                int nbIter = PositionComparator(Diff, idActive, 4);
+                int nbIter = PositionComparator(Diff, idActive, 2);
                 if (nbIter != -1)
                 {
-                    print(idActive);
-                    print(nbIter);
+
                 }
 
             }
@@ -60,7 +67,7 @@ public class AlgorithmIA : MonoBehaviour
     }
      
 
-    int PositionComparator(Vector3 Differential, ushort idActive, int iter)
+    int PositionComparator(Vector3 differential, ushort idActive, int iter)
     {
         int result = -1;
         Vector3 bulletPostPosition;
@@ -70,20 +77,19 @@ public class AlgorithmIA : MonoBehaviour
 
         for (int i = 1; i <= iter; i++)
         {
-            bulletPostPosition = _bulletsActPosition[idActive] + Differential * i;
-            print(_bulletsActPosition[idActive] + " : " + bulletPostPosition);
+            bulletPostPosition = _bulletsActPosition[idActive] + differential * i;
 
-            float CompX = _actualPosition.position.x - bulletPostPosition.x;
-            float CompY = _actualPosition.position.y - bulletPostPosition.y;
+            float CompX = actualPosition.position.x - bulletPostPosition.x;
+            float CompY = actualPosition.position.y - bulletPostPosition.y;
             print(CompX + " : " + CompY);
-            if ((CompX >= -0.6 && CompX <= 0.6)&&(CompY >= -0.6 && CompY <= 0.6))
+            if ((CompX >= -0.3 && CompX <= 0.3)&&(CompY >= -0.3 && CompY <= 0.3))
             {
                 result = i;
                 break;
             }
         }
 
-        return result;
+        return result; 
     }
 
     void Dijkstra(int nbIter)
@@ -111,6 +117,31 @@ public class AlgorithmIA : MonoBehaviour
         if(number <= 0)
             number = -number;
         return number;
+    }
+
+    void IaCallibration()
+    {
+        Vector3 preMove = actualPosition.position;
+
+        playerIA.MoveUp();
+        _moveCallibration[0] = actualPosition.position.x - preMove.x;
+        preMove = actualPosition.position;
+
+        playerIA.MoveRight();
+        _moveCallibration[1] = actualPosition.position.y - preMove.y;
+        preMove = actualPosition.position;
+
+        playerIA.MoveDown();
+        _moveCallibration[2] = preMove.x - actualPosition.position.x;
+        preMove = actualPosition.position;
+
+        playerIA.MoveLeft();
+        _moveCallibration[3] = preMove.y - actualPosition.position.y;
+
+        print(_moveCallibration[0]);
+        print(_moveCallibration[1]);
+        print(_moveCallibration[2]);
+        print(_moveCallibration[3]);
     }
 
     /* 
