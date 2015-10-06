@@ -17,7 +17,7 @@ public class BossLife : MonoBehaviour
     void OnCollisionEnter2D(Collision2D col)
     {
         //does not work now // create a taf for players shoot
-        if (col.gameObject.tag == "FriendProjectile")
+        if (col.gameObject.tag == "projPlayer")
         {
             if (_life > 0)
                 _life = _life - _damage;

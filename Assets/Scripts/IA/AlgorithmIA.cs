@@ -101,15 +101,22 @@ public class AlgorithmIA : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D bullet)
     {
-        BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
-        _idBulletsActive.Add(bulletScript.EID);
+        if(bullet.tag != "projPlayer")
+        {
+            BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
+            _idBulletsActive.Add(bulletScript.EID);
+        }
+       
         //_idBulletsActive[bulletScript.id] = true;
     }
 
     void OnTriggerExit2D(Collider2D bullet)
     {
-        BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
-        _idBulletsActive.Remove(bulletScript.EID);
+        if (bullet.tag != "projPlayer")
+        {
+            BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
+            _idBulletsActive.Remove(bulletScript.EID);
+        }
         //_idBulletsActive[bulletScript.id] = false;
     }
 
