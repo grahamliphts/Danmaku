@@ -43,7 +43,7 @@ public class WorldState : MonoBehaviour
                 entitiesStruct[i].rotation = Rotation;
                 entitiesStruct[i].isActive = isActive;
                 entitiesStruct[i].speed = speed;
-                if (EID == 1)
+                /*if (EID == 1)
                 {
                     Debug.Log("Entitie : " + EID + " Updated");
                     Debug.Log("position : " + position + " Updated");
@@ -51,7 +51,7 @@ public class WorldState : MonoBehaviour
                     Debug.Log("rotation : " + Rotation + " Updated");
                     Debug.Log("speed : " + speed + " Updated");
                     Debug.Log("isActive : " + isActive + " Updated");
-                }
+                }*/
             }
         }
         

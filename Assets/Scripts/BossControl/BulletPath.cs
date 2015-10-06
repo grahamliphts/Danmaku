@@ -6,6 +6,7 @@ public class BulletPath : Entity
     private int m_direction;
     public int speed = 1;
     public ushort id = 0;
+    public GameObject Boss;
     public WorldState __WorldState;
     
 
@@ -40,7 +41,7 @@ public class BulletPath : Entity
     {
         m_direction = Random.Range(0, 360);
         gameObject.SetActive(true);
-        transform.position = new Vector3(0, 3, 0);
+        transform.position = Boss.transform.position;
         transform.rotation = Quaternion.AngleAxis(direction, new Vector3(0, 0, 1));
         __WorldState.updateEntitie(transform.position, Vector3.right, transform.rotation, EID, gameObject.activeSelf, speed);
     }
