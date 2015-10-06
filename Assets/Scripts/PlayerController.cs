@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Entity
 {
-    private float _movementSpeed = 4.0f;
+    private int _movementSpeed = 4;
 
     private float _dist;
     private float _leftBorder, _rightBorder, _upBorder, _bottomBorder;
-	
+  
+
     void Update()
     {
         Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position);
@@ -22,6 +23,8 @@ public class PlayerController : MonoBehaviour
             MoveLeft();
         if (Input.GetKey("d"))
             MoveRight();
+
+        //WorldState ws = Step(WorldState state, Time.deltaTime);
     }
 
     public void MoveUp()
@@ -43,5 +46,4 @@ public class PlayerController : MonoBehaviour
     {
         transform.Translate((Vector2.right * _movementSpeed) * 2);
     }
-
 }

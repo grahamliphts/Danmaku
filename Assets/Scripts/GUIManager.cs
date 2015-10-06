@@ -6,7 +6,6 @@ public class GUIManager : MonoBehaviour
 
     public void LoadGame()
     {
-        Debug.Log("LoadGame");
         Application.LoadLevel("MainScene");
     }
 
