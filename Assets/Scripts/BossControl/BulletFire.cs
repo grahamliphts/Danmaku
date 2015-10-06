@@ -4,36 +4,20 @@ using System.Collections;
 public class BulletFire : MonoBehaviour
 {
     public GameObject[] bullets;
-    private float m_timmer;
     private BulletPath[] m_Bullets_Script;
     private int m_direction;
-    private uint m_mode = 1;
-
 
     void Start()
     {
-        // m_Bullet_Amount = 10;
         m_Bullets_Script = new BulletPath[bullets.Length];
-        for (int j = 0; j < bullets.Length; j++)
+        for (ushort j = 0; j < bullets.Length; j++)
         {
             bullets[j].SetActive(false);
             m_Bullets_Script[j] = bullets[j].GetComponent<BulletPath>();
-            //Debug.Log("Instantiating");
-            launchCoroutine();
+            m_Bullets_Script[j].id = j;
         }
-
-        m_timmer = Time.time;
+        changeMode(1);
     }
-
-    /*void Update()
-    {
-
-        if (Time.time - m_timmer > 0.5)
-        {
-            launchCoroutine();
-            m_timmer = Time.time;
-        }
-    }*/
 
     IEnumerator circleSpin(int max,int spawn = 0)
     {
@@ -205,44 +189,8 @@ public class BulletFire : MonoBehaviour
 
     public void changeMode(uint mode)
     {
+        StopAllCoroutines();
         switch (mode)
-        {
-            case 1:
-                stopCurrentCoroutine();
-                m_mode = 1;
-                launchCoroutine();
-                break;
-            case 2:
-                stopCurrentCoroutine();
-                m_mode = 2;
-                launchCoroutine();
-                break;
-            case 3:
-                stopCurrentCoroutine();
-                m_mode = 3;
-                launchCoroutine();
-                break;
-            case 4:
-                stopCurrentCoroutine();
-                m_mode = 4;
-                launchCoroutine();
-                break;
-            case 5:
-                stopCurrentCoroutine();
-                m_mode = 5;
-                launchCoroutine();
-                break;
-            default:
-                stopCurrentCoroutine();
-                m_mode = 1;
-                launchCoroutine();
-                break;
-        }
-    }
-
-    void launchCoroutine()
-    {
-        switch (m_mode)
         {
             case 1:
                 StartCoroutine(circleSpin(bullets.Length));
@@ -264,30 +212,4 @@ public class BulletFire : MonoBehaviour
                 break;
         }
     }
-
-    void stopCurrentCoroutine()
-    {
-        switch (m_mode)
-        {
-            case 1:
-                StopCoroutine(circleSpin(bullets.Length));
-                break;
-            case 2:
-                StopCoroutine(doubleSpin(bullets.Length));
-                break;
-            case 3:
-                StopCoroutine(crossFire(bullets.Length));
-                break;
-            case 4:
-                StopCoroutine(starFire(bullets.Length));
-                break;
-            case 5:
-                StopCoroutine(twinFire(bullets.Length));
-                break;
-            default:
-                StopCoroutine(circleSpin(bullets.Length, 0));
-                break;
-        }
-    }
-
 }
