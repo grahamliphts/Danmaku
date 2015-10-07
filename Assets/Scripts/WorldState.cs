@@ -7,7 +7,7 @@ public class WorldState : MonoBehaviour
     public Entity[] entities;
     Entity.EntityStruct[] entitiesStruct;
     //public BulletPath[] Bullets;
-    // Update is called once per frame
+
     void Start()
     {
         entitiesStruct = new Entity.EntityStruct[entities.Length];
@@ -34,39 +34,25 @@ public class WorldState : MonoBehaviour
 
     public void updateEntitie(Vector3 position,Vector3 ADirection,Quaternion Rotation, int EID,bool isActive,float speed)
     {
-        for (int i = 0; i < entitiesStruct.Length; i++)
+        entitiesStruct[EID].position = position;
+        entitiesStruct[EID].direction = ADirection;
+        entitiesStruct[EID].rotation = Rotation;
+        entitiesStruct[EID].isActive = isActive;
+        entitiesStruct[EID].speed = speed;
+        /*if (EID == 1)
         {
-            if (entitiesStruct[i].ID == EID)
-            {
-                entitiesStruct[i].position = position;
-                entitiesStruct[i].direction = ADirection;
-                entitiesStruct[i].rotation = Rotation;
-                entitiesStruct[i].isActive = isActive;
-                entitiesStruct[i].speed = speed;
-                /*if (EID == 1)
-                {
-                    Debug.Log("Entitie : " + EID + " Updated");
-                    Debug.Log("position : " + position + " Updated");
-                    Debug.Log("direction : " + ADirection + " Updated");
-                    Debug.Log("rotation : " + Rotation + " Updated");
-                    Debug.Log("speed : " + speed + " Updated");
-                    Debug.Log("isActive : " + isActive + " Updated");
-                }*/
-            }
-        }
+            Debug.Log("Entitie : " + EID + " Updated");
+            Debug.Log("position : " + position + " Updated");
+            Debug.Log("direction : " + ADirection + " Updated");
+            Debug.Log("rotation : " + Rotation + " Updated");
+            Debug.Log("speed : " + speed + " Updated");
+            Debug.Log("isActive : " + isActive + " Updated");
+        }*/
     }
 
     public Entity.EntityStruct GetEntity(int EID)
     {
-        Entity.EntityStruct result = new Entity.EntityStruct();
-        for (int i = 0; i < entitiesStruct.Length; i++)
-        {
-            if (entitiesStruct[i].ID == EID)
-            {
-                result = entitiesStruct[i];
-            }
-        }
-        return result;
+        return entitiesStruct[EID];
     }
 }
  

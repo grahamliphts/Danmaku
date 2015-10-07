@@ -82,15 +82,10 @@ public class AlgorithmIA : MonoBehaviour
         {
 
             // Deplacement 0.1 / move
-            float cibleX = 0;
-            if (bossPosition.goRight)
-                cibleX = bossPosition.transform.position.x + 1F;
-            else
-                cibleX = bossPosition.transform.position.x - 1F;
+            float cibleX = bossPosition.transform.position.x;
             float cibleY = -3;
 
             Dictionary<string, float> GridOuvert = new Dictionary<string, float>();
-            List<string> GridFermer = new List<string>();
 
             float dist = CalculDistance(actualPosition.position.x, actualPosition.position.y, cibleX, cibleY);
              
@@ -104,18 +99,18 @@ public class AlgorithmIA : MonoBehaviour
                  
                 if (iter == 8)
                 {
-                    switch (move.Substring(1, 1))
+                    switch (move[1])
                     {
-                        case "U":
+                        case 'U':
                             playerIA.MoveUp();
                             break;
-                        case "R":
+                        case 'R':
                             playerIA.MoveRight();
                             break;
-                        case "D":
+                        case 'D':
                             playerIA.MoveDown();
                             break;
-                        case "L":
+                        case 'L':
                             playerIA.MoveLeft();
                             break;
                     }
@@ -157,7 +152,6 @@ public class AlgorithmIA : MonoBehaviour
                     GridOuvert.Add(move + "L:" + iter, dist);
                 }
 
-                GridFermer.Add(closeCase);
                 GridOuvert.Remove(closeCase);
             }
             yield return new WaitForSeconds(0.01f);
@@ -187,11 +181,6 @@ public class AlgorithmIA : MonoBehaviour
             BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
             _idBulletsActive.Add(bulletScript.EID);
         }
-    }
-
-    void OnCollisionEnter2D(Collision2D coll)
-    {
-        Debug.Log("hit");
     }
 
     void OnTriggerExit2D(Collider2D bullet)
