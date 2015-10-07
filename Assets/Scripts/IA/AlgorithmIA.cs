@@ -155,7 +155,7 @@ public class AlgorithmIA : MonoBehaviour
         // Radius IA = 0.4u
         // Radius Projectile = 0.2u
 
-        bulletPostPosition = projectile.position + differential * iter;
+        bulletPostPosition = projectile.position + (differential * 0.1F)* iter;
         float CompX = posPlayerIA.x - bulletPostPosition.x;
         float CompY = posPlayerIA.y - bulletPostPosition.y;
 
