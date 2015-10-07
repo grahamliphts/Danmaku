@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BossMove : MonoBehaviour {
-
+public class BossMove : MonoBehaviour 
+{
     private Vector3 m_CamPos;
-    private bool goRight;
+    public bool goRight;
+
 	// Use this for initialization
-	void Start () {
+	void Start () 
+    {
         m_CamPos = Camera.main.WorldToViewportPoint(transform.position);
         goRight = true;
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+    {
         m_CamPos = Camera.main.WorldToViewportPoint(transform.position);
         if (m_CamPos.x <=0.71 && goRight)
             transform.Translate(new Vector3(1, 0, 0) * Time.deltaTime);

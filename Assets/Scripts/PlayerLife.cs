@@ -13,10 +13,10 @@ public class PlayerLife : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("trigger");
+        //Debug.Log("trigger");
         if (col.gameObject.tag == "projEnemy")
         {
-            Debug.Log("trigger2");
+            //Debug.Log("trigger2");
             if (_life > 0)
                 _life = _life - 1;
         }

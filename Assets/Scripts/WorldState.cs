@@ -32,7 +32,7 @@ public class WorldState : MonoBehaviour
         }*/
 	}
 
-    public void updateEntitie(Vector3 position,Vector3 ADirection,Quaternion Rotation, int EID,bool isActive,int speed)
+    public void updateEntitie(Vector3 position,Vector3 ADirection,Quaternion Rotation, int EID,bool isActive,float speed)
     {
         for (int i = 0; i < entitiesStruct.Length; i++)
         {

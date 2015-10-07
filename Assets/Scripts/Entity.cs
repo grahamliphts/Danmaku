@@ -9,7 +9,7 @@ public class Entity : MonoBehaviour
     public struct EntityStruct
     {
         public Vector3 position;
-        public int speed;
+        public float speed;
         public bool isActive;
         public Vector3 direction;
         public Quaternion rotation;

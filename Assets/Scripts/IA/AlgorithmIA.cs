@@ -5,15 +5,12 @@
 
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 
-public class AlgorithmIA : MonoBehaviour 
+public class AlgorithmIA : MonoBehaviour
 {
     [SerializeField]
-    public Transform bossPosition;
-
-    [SerializeField]
-    public BulletPath[] bullets;
+    public BossMove bossPosition;
 
     [SerializeField]
     public Transform actualPosition;
@@ -26,124 +23,183 @@ public class AlgorithmIA : MonoBehaviour
 
     private List<int> _idBulletsActive;
 
-    private int _nbBullets = 0;
-
-    private float[] _moveCallibration;
-
-	void Start ()
+    void Start()
     {
-        _nbBullets = bullets.Length;
+        _idBulletsActive = new List<int>();
 
-        _moveCallibration    = new float[4];
-        _idBulletsActive     = new List<int>();
-
-        //IaCallibration();
-
-        StartCoroutine(Sentry());
-	}
-
-    IEnumerator Sentry()
-    {
-        while (true)
-        {
-            foreach (int idActive in _idBulletsActive)
-            {
-                Entity.EntityStruct actualBullet = worldState.GetEntity(idActive);
-                //Debug.Log(actualBullet.position);
-                /*
-                int nbIter = PositionComparator(actualBullet.__WorldState.entities[idActive].d, idActive, 2);
-                if (nbIter != -1)
-                {
-                    AlgoAStar(nbIter);
-                }*/
-
-            }
-            yield return new WaitForSeconds(0.1f);
-        }
+        StartCoroutine(AlgoAStar());
     }
      
-
-    int PositionComparator(Vector3 differential, ushort idActive, int iter)
+    int PositionComparator(Entity.EntityStruct projectile, Vector3 posPlayerIA, int iter)
     {
         int result = -1;
         Vector3 bulletPostPosition;
+        Vector3 differential = projectile.direction;
 
         // Radius IA = 0.4u
         // Radius Projectile = 0.2u
 
-        for (int i = 1; i <= iter; i++)
+        bulletPostPosition = projectile.position + differential * iter;
+        float CompX = posPlayerIA.x - bulletPostPosition.x;
+        float CompY = posPlayerIA.y - bulletPostPosition.y;
+
+        if ((CompX >= -0.4 && CompX <= 0.4) && (CompY >= -0.4 && CompY <= 0.4))
         {
-            //bulletPostPosition = _bulletsActPosition[idActive] + differential * i;
-            //float CompX = actualPosition.position.x - bulletPostPosition.x;
-            //float CompY = actualPosition.position.y - bulletPostPosition.y;
-            /*
-            if ((CompX >= -0.3 && CompX <= 0.3)&&(CompY >= -0.3 && CompY <= 0.3))
-            {
-                result = i;
-                break;
-            }*/
+            result = iter;
         }
-
-        return result; 
+         
+        return result;
     }
 
-    void AlgoAStar(int nbIter)
+    float CalculDistance(float posX, float posY, float endX, float endY)
     {
-        int cibleX = 0;
-        int cibleY = -3;
+        float result = 0;
+        result += posX > endX ? posX - endX : endX - posX;
+        result += posY > endY ? posY - endY : endY - posY;
+        return result;
+    }
+    
+    int detectPostCollision(Vector3 postPos, int iter)
+    {
+        int result = 0;
+        foreach (int idActive in _idBulletsActive)
+        {
+            Entity.EntityStruct actualBullet = worldState.GetEntity(idActive);
 
-        List<int> GridOuvert = new List<int>();
-        List<int> GridFermer = new List<int>();
-
-
-
+            int res = PositionComparator(actualBullet, postPos, iter);
+            if (res != -1)
+            {
+                result = 1;
+                break;
+            }
+        }
+        return result;
     }
 
+    IEnumerator AlgoAStar()
+    {
+        while(true)
+        {
+
+            // Deplacement 0.1 / move
+            float cibleX = 0;
+            if (bossPosition.goRight)
+                cibleX = bossPosition.transform.position.x + 1F;
+            else
+                cibleX = bossPosition.transform.position.x - 1F;
+            float cibleY = -3;
+
+            Dictionary<string, float> GridOuvert = new Dictionary<string, float>();
+            List<string> GridFermer = new List<string>();
+
+            float dist = CalculDistance(actualPosition.position.x, actualPosition.position.y, cibleX, cibleY);
+             
+            GridOuvert.Add("O:0", dist);
+            while ((GridOuvert.Count != 0) && dist > 0.1F)
+            {
+                string closeCase = SelectCloser(GridOuvert);
+
+                string move = closeCase.Split(':')[0];
+                int iter = int.Parse(closeCase.Split(':')[1]) + 1;
+                 
+                if (iter == 8)
+                {
+                    switch (move.Substring(1, 1))
+                    {
+                        case "U":
+                            playerIA.MoveUp();
+                            break;
+                        case "R":
+                            playerIA.MoveRight();
+                            break;
+                        case "D":
+                            playerIA.MoveDown();
+                            break;
+                        case "L":
+                            playerIA.MoveLeft();
+                            break;
+                    }
+                    break;
+                }
+
+                // Up
+                Vector3 diff = new Vector3(0F, 0.1F, 0F);
+                Vector3 postPos = actualPosition.position + diff;
+                if (detectPostCollision(postPos, iter) == 0)
+                {
+                    dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                    GridOuvert.Add(move + "U:" + iter, dist);
+                }
+                // Right
+                diff = new Vector3(0.1F, 0F, 0F);
+                postPos = actualPosition.position + diff;
+                if (detectPostCollision(postPos, iter) == 0)
+                {
+                    dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                    GridOuvert.Add(move + "R:" + iter, dist);
+                }
+
+                // Down
+                diff = new Vector3(0F, -0.1F, 0F);
+                postPos = actualPosition.position + diff;
+                if (detectPostCollision(postPos, iter) == 0)
+                {
+                    dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                    GridOuvert.Add(move + "D:" + iter, dist);
+                }
+
+                // Left
+                diff = new Vector3(-0.1F, 0F, 0F);
+                postPos = actualPosition.position + diff;
+                if (detectPostCollision(postPos, iter) == 0)
+                {
+                    dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                    GridOuvert.Add(move + "L:" + iter, dist);
+                }
+
+                GridFermer.Add(closeCase);
+                GridOuvert.Remove(closeCase);
+            }
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
+    string SelectCloser(Dictionary<string, float> GridOuvert)
+    {
+        float dist = 100;
+        string resultCloser = "O:0";
+
+        foreach (KeyValuePair<string, float> Case in GridOuvert)
+        {
+            if (Case.Value < dist)
+            {
+                resultCloser = Case.Key;
+                dist = Case.Value;
+            }
+        }
+        return resultCloser;
+    }
+     
     void OnTriggerEnter2D(Collider2D bullet)
     {
-        if(bullet.tag == "projEnemy")
+        if (bullet.tag == "projEnemy")
         {
             BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
             _idBulletsActive.Add(bulletScript.EID);
         }
-       
-        //_idBulletsActive[bulletScript.id] = true;
+    }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        Debug.Log("hit");
     }
 
     void OnTriggerExit2D(Collider2D bullet)
     {
-        if (bullet.tag != "projPlayer")
+        if (bullet.tag == "projEnemy")
         {
             BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
             _idBulletsActive.Remove(bulletScript.EID);
         }
-        //_idBulletsActive[bulletScript.id] = false;
-    }
-
-    float Abs(float number)
-    {
-        if(number <= 0)
-            number = -number;
-        return number;
-    }
-
-    void IaCallibration()
-    {
-        Vector3 preMove = actualPosition.position;
-
-        playerIA.MoveUp();
-        _moveCallibration[0] = actualPosition.position.x - preMove.x;
-        preMove = actualPosition.position;
-
-        playerIA.MoveRight();
-        _moveCallibration[1] = actualPosition.position.y - preMove.y;
-        preMove = actualPosition.position;
-
-        playerIA.MoveDown();
-        _moveCallibration[2] = preMove.x - actualPosition.position.x;
-        preMove = actualPosition.position;
-
-        playerIA.MoveLeft();
-        _moveCallibration[3] = preMove.y - actualPosition.position.y;
     }
 }
