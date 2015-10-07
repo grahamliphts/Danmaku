@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WorldState : MonoBehaviour 
+public class WorldState : MonoBehaviour
 {
 
     public Entity[] entities;

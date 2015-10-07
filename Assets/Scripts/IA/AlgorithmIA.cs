@@ -44,39 +44,20 @@ public class AlgorithmIA : MonoBehaviour
         float dist = CalculDistance(actualPosition.position.x, actualPosition.position.y, cibleX, cibleY);
 
         GridOuvert.Add("O:0", dist);
-        while ((GridOuvert.Count != 0) && dist > 0.1F)
+
+        string move = "";
+        int iter = 0;
+         
+        while (GridOuvert.Count != 0)
         {
             string closeCase = SelectCloser(GridOuvert);
 
-            string move = closeCase.Split(':')[0];
-            int iter = int.Parse(closeCase.Split(':')[1]) + 1;
+            move = closeCase.Split(':')[0];
+            iter = int.Parse(closeCase.Split(':')[1]) + 1;
 
-            if (iter >= 8)
+            if (iter >= 6)
             {
-                switch (move[1])
-                {
-                    case 'U':
-                        playerIA.MoveUp();
-                        break;
-                    case 'R':
-                        playerIA.MoveRight();
-                        last = 'R';
-                        break;
-                    case 'D':
-                        playerIA.MoveDown();
-                        if (last == 'L')
-                            playerIA.MoveRight();
-                        if (last == 'R')
-                            playerIA.MoveLeft();
-
-                        break;
-                    case 'L':
-                        playerIA.MoveLeft();
-                        last = 'L';
-                        break;
-                    default:
-                        break;
-                }
+                Movement(move, 1);
                 break;
             }
              
@@ -102,50 +83,129 @@ public class AlgorithmIA : MonoBehaviour
                 }
             }
 
+            #region Add Node
             // Up
             Vector3 diff = new Vector3(0F, 0.1F, 0F);
             Vector3 postPos = actuPos + diff;
-            if (detectPostCollision(postPos, iter) == 0)
+            Vector3 cameraPos = Camera.main.WorldToViewportPoint(postPos);
+            if ((detectPostCollision(postPos, iter) == 0) && (cameraPos.y < 0.8))
             {
                 dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
                 GridOuvert.Add(move + "U:" + iter, dist);
                 Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
             }
 
+            // Up Right
+            diff = new Vector3(0.1F, 0.1F, 0F);
+            postPos = actuPos + diff;
+            cameraPos = Camera.main.WorldToViewportPoint(postPos);
+            if ((detectPostCollision(postPos, iter) == 0) && (cameraPos.x < 1) && (cameraPos.y < 0.8))
+            {
+                dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                GridOuvert.Add(move + "TUR:" + iter, dist);
+                Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
+            }
+
             // Right
             diff = new Vector3(0.1F, 0F, 0F);
             postPos = actuPos + diff;
-            if (detectPostCollision(postPos, iter) == 0)
+            cameraPos = Camera.main.WorldToViewportPoint(postPos);
+            if ((detectPostCollision(postPos, iter) == 0) && (cameraPos.x < 1))
             {
                 dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
                 GridOuvert.Add(move + "R:" + iter, dist);
                 Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
             }
-             
+
+            // Down Right 
+            diff = new Vector3(0.1F, -0.1F, 0F);
+            postPos = actuPos + diff;
+            cameraPos = Camera.main.WorldToViewportPoint(postPos);
+            if ((detectPostCollision(postPos, iter) == 0) && (cameraPos.x < 1) && (cameraPos.y > 0.1))
+            {
+                dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                GridOuvert.Add(move + "TDR:" + iter, dist);
+                Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
+            }
+
             // Down
             diff = new Vector3(0F, -0.1F, 0F);
             postPos = actuPos + diff;
-            if (detectPostCollision(postPos, iter) == 0)
-            { 
+            cameraPos = Camera.main.WorldToViewportPoint(postPos);
+            if ((detectPostCollision(postPos, iter) == 0) && (cameraPos.y > 0.1))
+            {
                 dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
                 GridOuvert.Add(move + "D:" + iter, dist);
                 Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
             }
 
+            // Down Left
+            diff = new Vector3(-0.1F, -0.1F, 0F);
+            postPos = actuPos + diff;
+            cameraPos = Camera.main.WorldToViewportPoint(postPos);
+            if ((detectPostCollision(postPos, iter) == 0) && (cameraPos.x > 0) && (cameraPos.y > 0.1))
+            {
+                dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                GridOuvert.Add(move + "TDL:" + iter, dist);
+                Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
+            } 
+
             // Left
             diff = new Vector3(-0.1F, 0F, 0F);
-            postPos = actuPos + diff; 
-            if (detectPostCollision(postPos, iter) == 0)
+            postPos = actuPos + diff;
+            cameraPos = Camera.main.WorldToViewportPoint(postPos);
+            if ((detectPostCollision(postPos, iter) == 0) && (cameraPos.x > 0))
             {
                 dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
                 GridOuvert.Add(move + "L:" + iter, dist);
                 Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
             }
-             
+
+            // Up Left
+            diff = new Vector3(-0.1F, 0.1F, 0F);
+            postPos = actuPos + diff;
+            cameraPos = Camera.main.WorldToViewportPoint(postPos);
+            if ((detectPostCollision(postPos, iter) == 0) && (cameraPos.x > 0) && (cameraPos.y < 0.8))
+            {
+                dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                GridOuvert.Add(move + "TUL:" + iter, dist);
+                Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
+            }
+            #endregion
+
             GridOuvert.Remove(closeCase);
+        }
+        if (iter < 6)
+        {
+            Movement(move, 1);
         }
     }
     
+    void Movement(string move, int index)
+    {
+        switch (move[index])
+        {
+            case 'U':
+                playerIA.MoveUp();
+                break;
+            case 'R':
+                playerIA.MoveRight();
+                break;
+            case 'D':
+                playerIA.MoveDown();
+                break;
+            case 'L':
+                playerIA.MoveLeft();
+                break;
+            case 'T':
+                Movement(move, index + 1);
+                Movement(move, index + 2);
+                break;
+            default:
+                break;
+        }
+    }
+
     int PositionComparator(Entity.EntityStruct projectile, Vector3 posPlayerIA, int iter)
     {
         int result = -1;
@@ -155,11 +215,11 @@ public class AlgorithmIA : MonoBehaviour
         // Radius IA = 0.4u
         // Radius Projectile = 0.2u
 
-        bulletPostPosition = projectile.position + (differential * 0.1F)* iter;
+        bulletPostPosition = projectile.position + differential * iter;
         float CompX = posPlayerIA.x - bulletPostPosition.x;
         float CompY = posPlayerIA.y - bulletPostPosition.y;
 
-        if ((CompX >= -0.5f && CompX <= 0.5f) && (CompY >= -0.5f && CompY <= 0.5f))
+        if ((CompX >= -0.3f && CompX <= 0.3f) && (CompY >= -0.3f && CompY <= 0.3f))
         {
             result = iter;
         } 
