@@ -8,6 +8,8 @@ public class BossLife : MonoBehaviour
     private float _life;
     [SerializeField]
     private int _damage;
+    [SerializeField]
+    private Renderer sprite;
 
     void Start()
     {
@@ -20,11 +22,19 @@ public class BossLife : MonoBehaviour
         if (col.gameObject.tag == "projPlayer")
         {
             if (_life > 0)
+            {
                 _life = _life - _damage;
+                StartCoroutine("Blink");
+            }  
         }
-       
     }
 
+    IEnumerator Blink()
+    {
+        sprite.enabled = false;
+        yield return new WaitForSeconds(0.1f);
+        sprite.enabled = true;
+    }
     public float GetLife()
     {
         return _life;
