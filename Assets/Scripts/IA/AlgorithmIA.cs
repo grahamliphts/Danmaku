@@ -26,10 +26,87 @@ public class AlgorithmIA : MonoBehaviour
     void Start()
     {
         _idBulletsActive = new List<int>();
-
-        StartCoroutine(AlgoAStar());
     }
      
+    void FixedUpdate()
+    {
+        // Deplacement 0.1 / move
+        float cibleX = bossPosition.transform.position.x;
+        float cibleY = -3;
+
+        Dictionary<string, float> GridOuvert = new Dictionary<string, float>();
+
+        float dist = CalculDistance(actualPosition.position.x, actualPosition.position.y, cibleX, cibleY);
+
+        GridOuvert.Add("O:0", dist);
+        while ((GridOuvert.Count != 0) && dist > 0.1F)
+        {
+            string closeCase = SelectCloser(GridOuvert);
+
+            string move = closeCase.Split(':')[0];
+            int iter = int.Parse(closeCase.Split(':')[1]) + 1;
+
+            if (iter >= 8)
+            {
+                switch (move[1])
+                {
+                    case 'U':
+                        playerIA.MoveUp();
+                        break;
+                    case 'R':
+                        playerIA.MoveRight();
+                        break;
+                    case 'D':
+                        playerIA.MoveDown();
+                        break;
+                    case 'L':
+                        playerIA.MoveLeft();
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+
+            // Up
+            Vector3 diff = new Vector3(0F, 0.1F, 0F);
+            Vector3 postPos = actualPosition.position + diff;
+            if (detectPostCollision(postPos, iter) == 0)
+            {
+                dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                GridOuvert.Add(move + "U:" + iter, dist);
+            }
+            // Right
+            diff = new Vector3(0.1F, 0F, 0F);
+            postPos = actualPosition.position + diff;
+            if (detectPostCollision(postPos, iter) == 0)
+            {
+                dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                GridOuvert.Add(move + "R:" + iter, dist);
+            }
+
+            // Down
+            diff = new Vector3(0F, -0.1F, 0F);
+            postPos = actualPosition.position + diff;
+            if (detectPostCollision(postPos, iter) == 0)
+            {
+                dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                GridOuvert.Add(move + "D:" + iter, dist);
+            }
+
+            // Left
+            diff = new Vector3(-0.1F, 0F, 0F);
+            postPos = actualPosition.position + diff;
+            if (detectPostCollision(postPos, iter) == 0)
+            {
+                dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
+                GridOuvert.Add(move + "L:" + iter, dist);
+            }
+
+            GridOuvert.Remove(closeCase);
+        }
+    }
+
     int PositionComparator(Entity.EntityStruct projectile, Vector3 posPlayerIA, int iter)
     {
         int result = -1;
@@ -43,7 +120,7 @@ public class AlgorithmIA : MonoBehaviour
         float CompX = posPlayerIA.x - bulletPostPosition.x;
         float CompY = posPlayerIA.y - bulletPostPosition.y;
 
-        if ((CompX >= -0.4 && CompX <= 0.4) && (CompY >= -0.4 && CompY <= 0.4))
+        if ((CompX >= -0.5 && CompX <= 0.5) && (CompY >= -0.5 && CompY <= 0.5))
         {
             result = iter;
         }
@@ -74,88 +151,6 @@ public class AlgorithmIA : MonoBehaviour
             }
         }
         return result;
-    }
-
-    IEnumerator AlgoAStar()
-    {
-        while(true)
-        {
-
-            // Deplacement 0.1 / move
-            float cibleX = bossPosition.transform.position.x;
-            float cibleY = -3;
-
-            Dictionary<string, float> GridOuvert = new Dictionary<string, float>();
-
-            float dist = CalculDistance(actualPosition.position.x, actualPosition.position.y, cibleX, cibleY);
-             
-            GridOuvert.Add("O:0", dist);
-            while ((GridOuvert.Count != 0) && dist > 0.1F)
-            {
-                string closeCase = SelectCloser(GridOuvert);
-
-                string move = closeCase.Split(':')[0];
-                int iter = int.Parse(closeCase.Split(':')[1]) + 1;
-                 
-                if (iter == 8)
-                {
-                    switch (move[1])
-                    {
-                        case 'U':
-                            playerIA.MoveUp();
-                            break;
-                        case 'R':
-                            playerIA.MoveRight();
-                            break;
-                        case 'D':
-                            playerIA.MoveDown();
-                            break;
-                        case 'L':
-                            playerIA.MoveLeft();
-                            break;
-                    }
-                    break;
-                }
-
-                // Up
-                Vector3 diff = new Vector3(0F, 0.1F, 0F);
-                Vector3 postPos = actualPosition.position + diff;
-                if (detectPostCollision(postPos, iter) == 0)
-                {
-                    dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
-                    GridOuvert.Add(move + "U:" + iter, dist);
-                }
-                // Right
-                diff = new Vector3(0.1F, 0F, 0F);
-                postPos = actualPosition.position + diff;
-                if (detectPostCollision(postPos, iter) == 0)
-                {
-                    dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
-                    GridOuvert.Add(move + "R:" + iter, dist);
-                }
-
-                // Down
-                diff = new Vector3(0F, -0.1F, 0F);
-                postPos = actualPosition.position + diff;
-                if (detectPostCollision(postPos, iter) == 0)
-                {
-                    dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
-                    GridOuvert.Add(move + "D:" + iter, dist);
-                }
-
-                // Left
-                diff = new Vector3(-0.1F, 0F, 0F);
-                postPos = actualPosition.position + diff;
-                if (detectPostCollision(postPos, iter) == 0)
-                {
-                    dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
-                    GridOuvert.Add(move + "L:" + iter, dist);
-                }
-
-                GridOuvert.Remove(closeCase);
-            }
-            yield return new WaitForSeconds(0.01F);
-        }
     }
 
     string SelectCloser(Dictionary<string, float> GridOuvert)
