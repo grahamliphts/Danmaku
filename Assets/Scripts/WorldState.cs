@@ -26,8 +26,15 @@ public class WorldState : MonoBehaviour
             //entities[i].SetStruct(newEntitiesStruct[i]);
             //Vector3 forward = transform.TransformDirection(Vector3.forward) * 10;
             //Debug.DrawRay(entitiesStruct[i].position, forward, Color.green);
-            Debug.DrawLine(entitiesStruct[i].position, entitiesStruct[i].position + entitiesStruct[i].direction * 20, Color.red);
-            // Debug.Log("Draw Debug");
+            for (int j = 0; j < 20; j++ )
+            {
+                if(j%2 == 0)
+                    Debug.DrawLine(entitiesStruct[i].position + entitiesStruct[i].direction * j, entitiesStruct[i].position + entitiesStruct[i].direction * (j + 1), Color.red);
+                else
+                    Debug.DrawLine(entitiesStruct[i].position + entitiesStruct[i].direction * j, entitiesStruct[i].position + entitiesStruct[i].direction * (j + 1), Color.green);
+                
+            }
+                // Debug.Log("Draw Debug");
         }
 	}
 

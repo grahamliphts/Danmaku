@@ -22,6 +22,7 @@ public class AlgorithmIA : MonoBehaviour
     public PlayerController playerIA;
 
     private List<int> _idBulletsActive;
+    private char last = 'R';
 
     void Start()
     {
@@ -31,9 +32,13 @@ public class AlgorithmIA : MonoBehaviour
     void FixedUpdate()
     {
         // Deplacement 0.1 / move
-        float cibleX = bossPosition.transform.position.x;
-        float cibleY = -3;
-
+        float cibleX;
+        if (bossPosition.goRight)
+            cibleX = bossPosition.transform.position.x + 1;
+        else
+            cibleX = bossPosition.transform.position.x - 1;
+        float cibleY = -2;
+        
         Dictionary<string, float> GridOuvert = new Dictionary<string, float>();
 
         float dist = CalculDistance(actualPosition.position.x, actualPosition.position.y, cibleX, cibleY);
@@ -46,7 +51,7 @@ public class AlgorithmIA : MonoBehaviour
             string move = closeCase.Split(':')[0];
             int iter = int.Parse(closeCase.Split(':')[1]) + 1;
 
-            if (iter >= 20)
+            if (iter >= 8)
             {
                 switch (move[1])
                 {
@@ -55,12 +60,19 @@ public class AlgorithmIA : MonoBehaviour
                         break;
                     case 'R':
                         playerIA.MoveRight();
+                        last = 'R';
                         break;
                     case 'D':
                         playerIA.MoveDown();
+                        if (last == 'L')
+                            playerIA.MoveRight();
+                        if (last == 'R')
+                            playerIA.MoveLeft();
+
                         break;
                     case 'L':
                         playerIA.MoveLeft();
+                        last = 'L';
                         break;
                     default:
                         break;
@@ -68,45 +80,72 @@ public class AlgorithmIA : MonoBehaviour
                 break;
             }
              
+            Vector3 actuPos = actualPosition.position;
+            foreach(char dir in move)
+            {
+                switch(dir)
+                {
+                    case 'U':
+                        actuPos += new Vector3(0F, 0.1F, 0F);
+                        break;
+                    case 'R':
+                        actuPos += new Vector3(0.1F, 0F, 0F);
+                        break;
+                    case 'D':
+                        actuPos += new Vector3(0F, -0.1F, 0F);
+                        break;
+                    case 'L':
+                        actuPos += new Vector3(-0.1F, 0F, 0F);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             // Up
             Vector3 diff = new Vector3(0F, 0.1F, 0F);
-            Vector3 postPos = actualPosition.position + diff;
+            Vector3 postPos = actuPos + diff;
             if (detectPostCollision(postPos, iter) == 0)
             {
                 dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
                 GridOuvert.Add(move + "U:" + iter, dist);
+                Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
             }
+
             // Right
             diff = new Vector3(0.1F, 0F, 0F);
-            postPos = actualPosition.position + diff;
+            postPos = actuPos + diff;
             if (detectPostCollision(postPos, iter) == 0)
             {
                 dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
                 GridOuvert.Add(move + "R:" + iter, dist);
+                Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
             }
-
+             
             // Down
             diff = new Vector3(0F, -0.1F, 0F);
-            postPos = actualPosition.position + diff;
+            postPos = actuPos + diff;
             if (detectPostCollision(postPos, iter) == 0)
-            {
+            { 
                 dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
                 GridOuvert.Add(move + "D:" + iter, dist);
+                Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
             }
 
             // Left
             diff = new Vector3(-0.1F, 0F, 0F);
-            postPos = actualPosition.position + diff;
+            postPos = actuPos + diff; 
             if (detectPostCollision(postPos, iter) == 0)
             {
                 dist = CalculDistance(postPos.x, postPos.y, cibleX, cibleY);
                 GridOuvert.Add(move + "L:" + iter, dist);
+                Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
             }
-
+             
             GridOuvert.Remove(closeCase);
         }
     }
-
+    
     int PositionComparator(Entity.EntityStruct projectile, Vector3 posPlayerIA, int iter)
     {
         int result = -1;
@@ -120,10 +159,10 @@ public class AlgorithmIA : MonoBehaviour
         float CompX = posPlayerIA.x - bulletPostPosition.x;
         float CompY = posPlayerIA.y - bulletPostPosition.y;
 
-        if ((CompX >= -1 && CompX <= 1) && (CompY >= -1 && CompY <= 1))
+        if ((CompX >= -0.5f && CompX <= 0.5f) && (CompY >= -0.5f && CompY <= 0.5f))
         {
             result = iter;
-        }
+        } 
          
         return result;
     }
