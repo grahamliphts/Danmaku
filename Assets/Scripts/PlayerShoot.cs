@@ -46,4 +46,14 @@ public class PlayerShoot : MonoBehaviour
             }
         }
     }
+
+
+    IEnumerator Shoot(int spawn)
+    {
+        while (true)
+        {
+           
+            yield return new WaitForSeconds(0.02f);
+        }
+    }
 }

@@ -30,9 +30,4 @@ public class PathPlayerShoot : MonoBehaviour
 
         //transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
     }
-
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        reset();
-    }
 }
