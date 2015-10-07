@@ -36,13 +36,17 @@ public class BulletFire : MonoBehaviour
                     m_ManualLaunched = 0;
                 m_Bullets_Script[m_ManualLaunched].play(270);
             }
-             
+
 
 
     }
 
     IEnumerator circleSpin(int max, int spawn = 0)
     {
+        while (spawn < max - 1 && bullets[spawn].activeSelf)
+        {
+            spawn++;
+        }
         bool isright = true;
         while (true)
         {
@@ -74,10 +78,16 @@ public class BulletFire : MonoBehaviour
 
     IEnumerator patternFire(int max, Shoot shoot, int spawn = 0)
     {
+        while (spawn < max - 1 && bullets[spawn].activeSelf)
+        {
+            spawn++;
+        }
+
         while (true)
         {
             if (spawn >= max)
                 spawn = 0;
+
             if (bullets[spawn].activeSelf == false)
             {
                 if (spawn % 2 == 0)
@@ -117,13 +127,22 @@ public class BulletFire : MonoBehaviour
 
     IEnumerator doubleSpin(int max, Shoot shoot, int spawn = 0)
     {
+
         bool isright = true;
+        while (spawn < max - 1 && bullets[spawn].activeSelf)
+        {
+            spawn++;
+        }
         while (true)
         {
+
             if (spawn >= max)
                 spawn = 0;
+            
+
             if (bullets[spawn].activeSelf == false)
             {
+                //Debug.Log("Fire Changed");
                 if (spawn % 2 == 0)
                 {
                     bullets[spawn].transform.position = new Vector3(0, 0, 0);
@@ -158,7 +177,9 @@ public class BulletFire : MonoBehaviour
 
     public void changeMode(uint mode)
     {
+        //Debug.Log("Ask for Fire change");
         StopAllCoroutines();
+        //Debug.Log("Old Fire Stoped");
         switch (mode)
         {
             case 1:
