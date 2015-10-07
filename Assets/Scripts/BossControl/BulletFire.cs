@@ -29,12 +29,19 @@ public class BulletFire : MonoBehaviour
         if (m_ActiveMode == 6)
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Click");
+               // Debug.Log("Click");
                 if (m_ManualLaunched < bullets.Length - 1)
                     m_ManualLaunched++;
                 else
                     m_ManualLaunched = 0;
-                m_Bullets_Script[m_ManualLaunched].play(270);
+                var v3 = Input.mousePosition;
+                v3.z = 10.0F;
+                v3 = Camera.main.ScreenToWorldPoint(v3);
+                //Debug.Log(v3);
+                Vector3 test = v3 -transform.position;
+                Debug.Log(test);
+
+                m_Bullets_Script[m_ManualLaunched].play((int) Vector3.Angle(transform.up,test));
             }
 
 
