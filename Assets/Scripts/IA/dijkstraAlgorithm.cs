@@ -65,14 +65,16 @@ void Start()
                     Debug.DrawLine(actualPosition - new Vector3(0.05F, 0.05F, 0), actualPosition + new Vector3(0.05F, 0.05F, 0), Color.red);
                     Debug.DrawLine(actualPosition - new Vector3(0.05F, -0.05F, 0), actualPosition + new Vector3(0.05F, -0.05F, 0), Color.red);
                     m_idle = false;
-                    m_explored[iterator] = 1000F;
+                   // m_explored[iterator] = 1000F;
+                    m_explored[iterator] = Vector3.Distance(actualPosition, bossPos);
 
                 }
                 else
                 {
                     Debug.DrawLine(actualPosition - new Vector3(0.05F, 0.05F, 0), actualPosition + new Vector3(0.05F, 0.05F, 0), Color.green);
                     Debug.DrawLine(actualPosition - new Vector3(0.05F, -0.05F, 0), actualPosition + new Vector3(0.05F, -0.05F, 0), Color.green);
-                    m_explored[iterator] = Vector3.Distance(actualPosition, bossPos);
+                   // m_explored[iterator] = Vector3.Distance(actualPosition, bossPos);
+                    m_explored[iterator] = 1000F;
                     m_idle = true;
                 }
 
@@ -89,19 +91,19 @@ void Start()
         // TEMPORARY **********************
        // if (!m_idle)
        // {
-            float min = 1000;
+            float min = 10000;
             int posIndex = 0;
             float[] dirdec = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            for (int j = 0; j < 79; j = j + 8 )
-            {
+            //for (int j = 0; j < 79; j = j + 8 )
+           // {
                 int incr = 0;
-                for (int temp = j; temp < 8; temp++)
+                for (int temp = 0; temp < 8; temp++)
                 {
-                    dirdec[incr] += m_explored[j + temp];
+                    dirdec[incr] += m_explored[0 + temp];
 
                     incr++;
                 }
-            }
+            //}
             for(int i = 0; i < 8; i++)
             {
                 if (dirdec[i] < min)
@@ -217,8 +219,8 @@ void Start()
         for(int i =0; i < m_bulletInsideIndex; i++)
         {
             Entity.EntityStruct watched = m_worldArray[i];
-            watched.position = watched.position + watched.direction * 10;
-            if (inArea(watched.position, position, 0.01F, radius)) // TODO
+            watched.position = watched.position + watched.direction ;
+            if (inArea(watched.position, position, 0.01F, 0.1F)) // TODO
             {
                 //Debug.Log(watched.ID + " Is on" + watched.position);
                 return 1000;
