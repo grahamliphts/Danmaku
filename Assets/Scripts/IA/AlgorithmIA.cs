@@ -21,12 +21,14 @@ public class AlgorithmIA : MonoBehaviour
     [SerializeField]
     public PlayerController playerIA;
 
-    private List<int> _idBulletsActive;
+    //private List<int> _idBulletsActive;
+    private int[] m_bulletInside;
+    private int m_bulletInsideIndex = -1;
     private char last = 'R';
 
     void Start()
     {
-        _idBulletsActive = new List<int>();
+        m_bulletInside = new int[81];
     }
      
     void FixedUpdate()
@@ -238,9 +240,10 @@ public class AlgorithmIA : MonoBehaviour
     int detectPostCollision(Vector3 postPos, int iter)
     {
         int result = 0;
-        foreach (int idActive in _idBulletsActive)
+        for (int i = 0; i < m_bulletInsideIndex; i++)
         {
-            Entity.EntityStruct actualBullet = worldState.GetEntity(idActive);
+            int id = m_bulletInside[i];
+            Entity.EntityStruct actualBullet = worldState.GetEntity(id);
 
             int res = PositionComparator(actualBullet, postPos, iter);
             if (res != -1)
@@ -272,8 +275,16 @@ public class AlgorithmIA : MonoBehaviour
     {
         if (bullet.tag == "projEnemy")
         {
+            /*
             BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
-            _idBulletsActive.Add(bulletScript.EID);
+            _idBulletsActive.Add(bulletScript.EID);*/
+            
+            if (m_bulletInsideIndex == -1)
+                m_bulletInsideIndex++;
+             
+            BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
+            m_bulletInside[m_bulletInsideIndex] = bulletScript.EID;
+            m_bulletInsideIndex++;
         }
     }
 
@@ -281,8 +292,21 @@ public class AlgorithmIA : MonoBehaviour
     {
         if (bullet.tag == "projEnemy")
         {
+            /*
             BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
-            _idBulletsActive.Remove(bulletScript.EID);
+            _idBulletsActive.Remove(bulletScript.EID);*/
+
+            BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
+            bool flag = false;
+            for (int i = 0; i < m_bulletInsideIndex; i++)
+            {
+                if(flag || (m_bulletInside[i] == bulletScript.EID && i < m_bulletInsideIndex - 1))
+                {
+                    m_bulletInside[i] = m_bulletInside[i + 1];
+                    flag = true;
+                }
+            }
+            m_bulletInsideIndex--;
         }
     }
 }
