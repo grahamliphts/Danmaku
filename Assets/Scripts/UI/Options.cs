@@ -37,7 +37,6 @@ public class Options : MonoBehaviour
 			GameObject button = (GameObject)Instantiate(modelButton);
 			button.GetComponentInChildren<Text>().text = qualities[i];
 			int index = i;
-            Debug.LogError(i);
             button.GetComponent<Button>().onClick.AddListener
 			(
 				() => SetQualityIndex(index)
