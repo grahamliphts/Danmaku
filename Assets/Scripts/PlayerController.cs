@@ -30,24 +30,24 @@ public class PlayerController : Entity
     public void MoveUp()
     {
         //transform.Translate((Vector2.up * _movementSpeed) * 2);
-        gameObject.transform.Translate(Vector3.up * Time.deltaTime * 5);
+        gameObject.transform.Translate(Vector3.up * 0.1F);
     }
 
     public void MoveDown()
     {
         //transform.Translate((-(Vector2.up) * _movementSpeed) * 2);
-        gameObject.transform.Translate(-Vector3.up * Time.deltaTime * 5);
+        gameObject.transform.Translate(-Vector3.up * 0.1F);
     }
     public void MoveRight()
     {
         //transform.Translate((Vector2.right * _movementSpeed) * 2);
-        gameObject.transform.Translate(Vector3.right * Time.deltaTime * 5);
+        gameObject.transform.Translate(Vector3.right * 0.1F);
     }
 
     public void MoveLeft()
     {
         // transform.Translate((-(Vector2.right) * _movementSpeed) * 2);
-        gameObject.transform.Translate(-Vector3.right * Time.deltaTime * 5);
+        gameObject.transform.Translate(-Vector3.right * 0.1F);
     }
 
 }

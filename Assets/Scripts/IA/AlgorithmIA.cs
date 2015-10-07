@@ -46,7 +46,7 @@ public class AlgorithmIA : MonoBehaviour
             string move = closeCase.Split(':')[0];
             int iter = int.Parse(closeCase.Split(':')[1]) + 1;
 
-            if (iter >= 8)
+            if (iter >= 20)
             {
                 switch (move[1])
                 {
@@ -67,7 +67,7 @@ public class AlgorithmIA : MonoBehaviour
                 }
                 break;
             }
-
+             
             // Up
             Vector3 diff = new Vector3(0F, 0.1F, 0F);
             Vector3 postPos = actualPosition.position + diff;
@@ -120,7 +120,7 @@ public class AlgorithmIA : MonoBehaviour
         float CompX = posPlayerIA.x - bulletPostPosition.x;
         float CompY = posPlayerIA.y - bulletPostPosition.y;
 
-        if ((CompX >= -1 && CompX <= 1) && (CompY >= 1 && CompY <= 1))
+        if ((CompX >= -1 && CompX <= 1) && (CompY >= -1 && CompY <= 1))
         {
             result = iter;
         }
@@ -155,7 +155,7 @@ public class AlgorithmIA : MonoBehaviour
 
     string SelectCloser(Dictionary<string, float> GridOuvert)
     {
-        float dist = 100;
+        float dist = 1000;
         string resultCloser = "O:0";
 
         foreach (KeyValuePair<string, float> Case in GridOuvert)
