@@ -58,16 +58,21 @@ void Start()
 
                 //actualPosition += new Vector3(0, 0.05F, 0);
 
-;                if (areaValue(actualPosition, 0.05F) > 0) //TODO
+                Vector3 bossPos = new Vector3(bossPosition.transform.position.x, -2, 0);
+
+                  if (areaValue(actualPosition, 0.05F) > 0) //TODO
                 {
                     Debug.DrawLine(actualPosition - new Vector3(0.05F, 0.05F, 0), actualPosition + new Vector3(0.05F, 0.05F, 0), Color.red);
                     Debug.DrawLine(actualPosition - new Vector3(0.05F, -0.05F, 0), actualPosition + new Vector3(0.05F, -0.05F, 0), Color.red);
                     m_idle = false;
+                    m_explored[iterator] = 1000F;
+
                 }
                 else
                 {
                     Debug.DrawLine(actualPosition - new Vector3(0.05F, 0.05F, 0), actualPosition + new Vector3(0.05F, 0.05F, 0), Color.green);
                     Debug.DrawLine(actualPosition - new Vector3(0.05F, -0.05F, 0), actualPosition + new Vector3(0.05F, -0.05F, 0), Color.green);
+                    m_explored[iterator] = Vector3.Distance(actualPosition, bossPos);
                     m_idle = true;
                 }
 
@@ -75,8 +80,8 @@ void Start()
                  {
 
                  }*/
-                Vector3 bossPos = new Vector3(bossPosition.transform.position.x, -2, 0);
-                m_explored[iterator] = Vector3.Distance(actualPosition, bossPos);
+                
+               
                 actualPosition = nextPos(iterator, actualPosition); // TODO
                 iterator++; // TODO
             }
@@ -212,8 +217,8 @@ void Start()
         for(int i =0; i < m_bulletInsideIndex; i++)
         {
             Entity.EntityStruct watched = m_worldArray[i];
-            watched.position = watched.position + watched.direction * 0.1F;
-            if (inArea(watched.position, position, radius, radius)) // TODO
+            watched.position = watched.position + watched.direction * 10;
+            if (inArea(watched.position, position, 0.01F, radius)) // TODO
             {
                 //Debug.Log(watched.ID + " Is on" + watched.position);
                 return 1000;
