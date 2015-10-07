@@ -13,8 +13,8 @@ public class BulletPath : Entity
 
     void Start()
     {
-        m_direction = Random.Range(0, 360);
-        transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
+       // m_direction = Random.Range(0, 360);
+        //transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
         gameObject.SetActive(false);
     }
 
@@ -31,16 +31,16 @@ public class BulletPath : Entity
 
         __WorldState.updateEntitie(transform.position, differential, transform.rotation, EID, gameObject.activeSelf, speed);
         var pos = Camera.main.WorldToViewportPoint(transform.position);
-        if (pos.x >= 1 || pos.y >= 1 || pos.x <= 0 || pos.y <= 0)
+        if (pos.x >= 1 || pos.y >= 1 || pos.x <= 0 || pos.y <= 0.1)
             reset();
         //Debug.Log(EID);
     }
 
     public void reset()
     {
-        m_direction = Random.Range(0, 360);
-        transform.position = new Vector3(0, 3, 0);
-        transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
+        //m_direction = Random.Range(0, 360);
+        //transform.position = new Vector3(0, 3, 0);
+        //transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
         gameObject.SetActive(false);
     }
 
