@@ -20,6 +20,7 @@ public class BulletPath : Entity
 
     void Update()
     {
+        /*
         //  Debug.Log("Before : " + transform.position);
         //transform.Translate(Vector3.right * Time.deltaTime * speed);
         Vector3 differential = this.transform.position;
@@ -33,7 +34,7 @@ public class BulletPath : Entity
         var pos = Camera.main.WorldToViewportPoint(transform.position);
         if (pos.x >= 1 || pos.y >= 1 || pos.x <= 0 || pos.y <= 0.1)
             reset();
-        //Debug.Log(EID);
+        //Debug.Log(EID);*/
     }
 
     public void reset()
@@ -61,7 +62,7 @@ public class BulletPath : Entity
         Debug.DrawRay(transform.position, dir, Color.red);
 
         __WorldState.updateEntitie(transform.position, differential, transform.rotation, EID, gameObject.activeSelf, speed);
-        //StartCoroutine(bulletMove());
+        StartCoroutine(bulletMove());
     }
 
     public void setEID( int eid)

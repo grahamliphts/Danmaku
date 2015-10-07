@@ -154,7 +154,7 @@ public class AlgorithmIA : MonoBehaviour
 
                 GridOuvert.Remove(closeCase);
             }
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.01F);
         }
     }
 
