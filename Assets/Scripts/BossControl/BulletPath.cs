@@ -11,12 +11,6 @@ public class BulletPath : Entity
     
 
 
-    void Start()
-    {
-       // m_direction = Random.Range(0, 360);
-        //transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
-        gameObject.SetActive(false);
-    }
 
     void FixedUpdate()
     {

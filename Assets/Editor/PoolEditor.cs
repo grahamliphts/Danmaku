@@ -56,8 +56,11 @@ public class PoolEditor : EditorWindow
             {
                 Pool poolComponent = pool.GetComponent<Pool>();
                 int nb = pool.transform.childCount;
+                Debug.Log("Nb " + nb);
+                Debug.Log("NbObject " + nbObject);
                 if (nbObject > nb)
                 {
+                    GroupResize(nbObject, ref poolComponent.items);
                     for (int i = nb; i < nbObject; i++)
                     {
                         GameObject prefabObj = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
@@ -68,18 +71,36 @@ public class PoolEditor : EditorWindow
                 else if (nbObject < nb)
                 {
                     int nbToRemove = nb - nbObject;
+                    Debug.Log(nbToRemove);
+                    GroupResize(nbObject, ref poolComponent.items);
+                    Transform[] transformToRemove = new Transform[nbToRemove];
                     for (int i = 0; i < nbToRemove; i++)
                     {
-                        Transform transform = pool.transform.GetChild(i);
-                        DestroyImmediate(transform.gameObject);
+                        Debug.Log("i " + i);
+                        transformToRemove[i] = pool.transform.GetChild(i);
                     }
-                    for (int i = 0; i < nbToRemove; i++)
+                    for(int i = 0; i < nbToRemove; i++)
                     {
-                        poolComponent.items[nbObject - i - 1] = null;
+                        DestroyImmediate(transformToRemove[i].gameObject);
+                    }
+                    for (int i = 0; i < poolComponent.items.Length; i++)
+                    {
+                        poolComponent.items[i] = pool.transform.GetChild(i).gameObject;
                     }
                 }
                 
             }
         }
+    }
+
+    public void GroupResize(int Size, ref GameObject[] Group)
+    {
+
+        GameObject[] temp = new GameObject[Size];
+        for (int c = 0; c < Mathf.Min(Size, Group.Length); c++)
+        {
+            temp[c] = Group[c];
+        }
+        Group = temp;
     }
 }
