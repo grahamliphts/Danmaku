@@ -120,7 +120,7 @@ public class AlgorithmIA : MonoBehaviour
         float CompX = posPlayerIA.x - bulletPostPosition.x;
         float CompY = posPlayerIA.y - bulletPostPosition.y;
 
-        if ((CompX >= -0.5 && CompX <= 0.5) && (CompY >= -0.5 && CompY <= 0.5))
+        if ((CompX >= -1 && CompX <= 1) && (CompY >= 1 && CompY <= 1))
         {
             result = iter;
         }

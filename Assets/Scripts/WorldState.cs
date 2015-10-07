@@ -20,16 +20,15 @@ public class WorldState : MonoBehaviour
     void FixedUpdate ()
     {
 
-       /* Entity.EntityStruct[] entitiesStruct = new Entity.EntityStruct[entities.Length];
-        for (int i = 0; i < entities.Length; i++)
+      // Entity.EntityStruct[] entitiesStruct = new Entity.EntityStruct[entities.Length];
+        for(int i = 0; i < entitiesStruct.Length; i++)
         {
-            entitiesStruct[i] = entities[i].CreateStruct();
+            //entities[i].SetStruct(newEntitiesStruct[i]);
+            //Vector3 forward = transform.TransformDirection(Vector3.forward) * 10;
+            //Debug.DrawRay(entitiesStruct[i].position, forward, Color.green);
+            Debug.DrawLine(entitiesStruct[i].position, entitiesStruct[i].position + entitiesStruct[i].direction * 20, Color.red);
+            // Debug.Log("Draw Debug");
         }
-        var newEntitiesStruct = GraphState.Step(entitiesStruct, Time.deltaTime);
-        for(int i = 0; i < entities.Length; i++)
-        {
-            entities[i].SetStruct(newEntitiesStruct[i]);
-        }*/
 	}
 
     public void updateEntitie(Vector3 position,Vector3 ADirection,Quaternion Rotation, int EID,bool isActive,float speed)
