@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WorldState : MonoBehaviour
+public class WorldState : MonoBehaviour 
 {
 
     public Entity[] entities;
     Entity.EntityStruct[] entitiesStruct;
     //public BulletPath[] Bullets;
 
+    private bool m_isSet = false;
     void Start()
     {
         entitiesStruct = new Entity.EntityStruct[entities.Length];
@@ -16,6 +17,7 @@ public class WorldState : MonoBehaviour
             entitiesStruct[i] = entities[i].CreateStruct(entities[i].gameObject.transform.position, new Vector3(0,0,0),i, entities[i].gameObject.activeSelf);
             entities[i].EID = i;
         }
+        m_isSet = true;
     }
     void FixedUpdate ()
     {
@@ -59,6 +61,14 @@ public class WorldState : MonoBehaviour
     public Entity.EntityStruct GetEntity(int EID)
     {
         return entitiesStruct[EID];
+    }
+
+    public int getEntityAmount()
+    {
+        if (m_isSet)
+            return entitiesStruct.Length;
+        else
+            return -1;
     }
 }
  
