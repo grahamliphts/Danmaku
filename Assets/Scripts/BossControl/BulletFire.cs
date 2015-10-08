@@ -39,6 +39,7 @@ public class BulletFire : MonoBehaviour
 
                 var pos = Input.mousePosition;
                 pos.z = Boss.transform.position.z - Camera.main.transform.position.z;
+
                 pos = Camera.main.ScreenToWorldPoint(pos);
 
                 Vector3 diff = pos - Boss.transform.position;
@@ -191,6 +192,7 @@ public class BulletFire : MonoBehaviour
     {
         //Debug.Log("Ask for Fire change");
         StopAllCoroutines();
+        StartCoroutine(explodeFire(bullets.Length,0.5F));
         //Debug.Log("Old Fire Stoped");
         switch (mode)
         {
@@ -221,6 +223,36 @@ public class BulletFire : MonoBehaviour
                 StartCoroutine(circleSpin(bullets.Length, 0));
                 m_ActiveMode = mode;
                 break;
+        }
+    }
+
+    IEnumerator explodeFire(int max, float Rate, int spawn = 0)
+    {
+
+        //bool isright = true;
+        while (spawn < max - 1 && bullets[spawn].activeSelf)
+        {
+            spawn++;
+        }
+        while (true)
+        {
+
+            if (spawn >= max)
+                spawn = 0;
+
+               Debug.Log("Explode");
+            if (bullets[spawn].activeSelf == false)
+            {
+                for (int i = 45; i < 135; i += 5)
+                {
+                    if (spawn >= max)
+                        spawn = 0;
+                    m_Bullets_Script[spawn].play(i);
+
+                    spawn++;
+                }
+            }
+            yield return new WaitForSeconds(Rate);
         }
     }
 }

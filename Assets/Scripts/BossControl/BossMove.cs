@@ -15,21 +15,23 @@ public class BossMove : MonoBehaviour
     }
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
     {
         if (!IDLE)
         {
             m_CamPos = Camera.main.WorldToViewportPoint(transform.position);
             if (m_CamPos.x <= 0.71 && goRight)
-                transform.Translate(new Vector3(1, 0, 0) * Time.deltaTime);
+                transform.Translate(new Vector3(1, 0, 0) * 0.05F);
             else if (m_CamPos.x >= 0.3)
             {
-                transform.Translate(new Vector3(-1, 0, 0) * Time.deltaTime);
+                transform.Translate(new Vector3(-1, 0, 0) * 0.05F);
                 goRight = false;
             }
             else
                 goRight = true;
             //else if( || m_CamPos.y >= 1 || m_CamPos.x <= 0 || m_CamPos.y <= 0)
+            Debug.DrawRay(transform.position + new Vector3(1, 0, 0), Vector3.down * 10);
+            Debug.DrawRay(transform.position + new Vector3(-1, 0, 0), Vector3.down * 10);
         }
 	}
 }

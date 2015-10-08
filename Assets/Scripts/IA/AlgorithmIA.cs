@@ -45,23 +45,43 @@ public class AlgorithmIA : MonoBehaviour
         _gridOuvert = new _gridData[zone];
         _cible = new float[2];
         _cible[1] = -2;
-    } 
-     
+    }
+
     void FixedUpdate()
     {
         // Deplacement 0.1 / move
-        if (bossPosition.goRight)
+        /*if (bossPosition.goRight)
             _cible[0] = bossPosition.transform.position.x + 1;
         else
-            _cible[0] = bossPosition.transform.position.x - 1;
-        
+            _cible[0] = bossPosition.transform.position.x - 1;*/
+        // _cible[0] = bossPosition.transform.position.x;
+        Vector3 Yfire = transform.position;
+        Vector3 bossProj;
+        int increment = 0;
+        while (Yfire.y < bossPosition.transform.position.y)
+        {
+            Yfire += Vector3.up * 0.7F;
+            increment++;
+        }
+
+        if (bossPosition.goRight) // Bos Projection
+            bossProj = bossPosition.transform.position + ((new Vector3(1, 0, 0) * 0.05F) * (increment));
+        else
+            bossProj = bossPosition.transform.position - ((new Vector3(1, 0, 0) * 0.05F) * (increment));
+
+        Debug.DrawLine(bossPosition.transform.position - new Vector3(0.2F, 0.2F, 0),  bossPosition.transform.position + new Vector3(0.2F, 0.2F, 0), Color.cyan); // Projection Impact
+        Debug.DrawLine(bossPosition.transform.position - new Vector3(0.2F, -0.2F, 0), bossPosition.transform.position + new Vector3(0.2F, -0.2F, 0), Color.cyan); // Projection Impact
+        Debug.DrawLine(transform.position, bossProj, Color.green); // Projection Alignement
+        Debug.DrawLine(transform.position, bossPosition.transform.position, Color.cyan); // Fire Path estimation
+        _cible[0] = bossProj.x;
+
         float dist = CalculDistance(actualPosition.position.x, actualPosition.position.y, _cible[0], _cible[1]);
 
         string move = "";
         int iter = 0;
 
         AddGrid("O", 0, dist);
-         
+
         while (_nbGrid != 0)
         {
             int closeCase = SelectCloser();
@@ -74,11 +94,11 @@ public class AlgorithmIA : MonoBehaviour
                 Movement(move, 1);
                 break;
             }
-             
+
             Vector3 actuPos = actualPosition.position;
-            foreach(char dir in move)
+            foreach (char dir in move)
             {
-                switch(dir)
+                switch (dir)
                 {
                     case 'U':
                         actuPos += new Vector3(0F, 0.1F, 0F);
@@ -98,21 +118,21 @@ public class AlgorithmIA : MonoBehaviour
             }
 
             #region Add Node
-            OpenGrid(actuPos, new Vector3(0F   , 0.1F , 0F), "U"  , closeCase); // Up
-            OpenGrid(actuPos, new Vector3(0.1F , 0.1F , 0F), "TUR", closeCase); // Up Right
-            OpenGrid(actuPos, new Vector3(0.1F , 0F   , 0F), "R"  , closeCase); // Right
-            OpenGrid(actuPos, new Vector3(0.1F , -0.1F, 0F), "TDR", closeCase); // Down Right 
-            OpenGrid(actuPos, new Vector3(0F   , -0.1F, 0F), "D"  , closeCase); // Down
+            OpenGrid(actuPos, new Vector3(0F, 0.1F, 0F), "U", closeCase); // Up
+            OpenGrid(actuPos, new Vector3(0.1F, 0.1F, 0F), "TUR", closeCase); // Up Right
+            OpenGrid(actuPos, new Vector3(0.1F, 0F, 0F), "R", closeCase); // Right
+            OpenGrid(actuPos, new Vector3(0.1F, -0.1F, 0F), "TDR", closeCase); // Down Right 
+            OpenGrid(actuPos, new Vector3(0F, -0.1F, 0F), "D", closeCase); // Down
             OpenGrid(actuPos, new Vector3(-0.1F, -0.1F, 0F), "TDL", closeCase); // Down Left
-            OpenGrid(actuPos, new Vector3(-0.1F, 0F   , 0F), "L"  , closeCase); // Left
-            OpenGrid(actuPos, new Vector3(-0.1F, 016F , 0F), "TUL", closeCase); // Up Left
+            OpenGrid(actuPos, new Vector3(-0.1F, 0F, 0F), "L", closeCase); // Left
+            OpenGrid(actuPos, new Vector3(-0.1F, 016F, 0F), "TUL", closeCase); // Up Left
             #endregion
 
             RemoveGrid(closeCase);
         }
         if (iter < _explo)
         {
-            if(move != "O")
+            if (move != "O")
                 Movement(move, 1);
         }
         _nbGrid = 0;
@@ -124,7 +144,7 @@ public class AlgorithmIA : MonoBehaviour
         Vector3 cameraPos = Camera.main.WorldToViewportPoint(postPos);
         bool access = false;
 
-        switch(move)
+        switch (move)
         {
             case "U":
                 if (cameraPos.y < 0.8)
@@ -166,7 +186,7 @@ public class AlgorithmIA : MonoBehaviour
             AddGrid(_gridOuvert[indexClose].move + move, _gridOuvert[indexClose].iter + 1, dist);
             Debug.DrawLine(postPos, postPos + new Vector3(0.05F, 0.05F, 0), Color.red);
         }
-    } 
+    }
 
     void Movement(string move, int index)
     {
@@ -209,8 +229,8 @@ public class AlgorithmIA : MonoBehaviour
         if ((CompX >= -0.3f && CompX <= 0.3f) && (CompY >= -0.3f && CompY <= 0.3f))
         {
             result = iter;
-        } 
-         
+        }
+
         return result;
     }
 
@@ -221,7 +241,7 @@ public class AlgorithmIA : MonoBehaviour
         result += posY > endY ? posY - endY : endY - posY;
         return result;
     }
-    
+
     int detectPostCollision(Vector3 postPos, int iter)
     {
         int result = 0;
@@ -262,7 +282,7 @@ public class AlgorithmIA : MonoBehaviour
         float dist = 1000;
         int closerIndex = 0;
 
-        for (int i = 0; i < _nbGrid ; i++)
+        for (int i = 0; i < _nbGrid; i++)
         {
             if (_gridOuvert[i].dist < dist)
             {
@@ -272,7 +292,7 @@ public class AlgorithmIA : MonoBehaviour
         }
         return closerIndex;
     }
-     
+
     void OnTriggerEnter2D(Collider2D bullet)
     {
         if (bullet.tag == "projEnemy")
@@ -283,7 +303,7 @@ public class AlgorithmIA : MonoBehaviour
 
             if (_bulletInIndex == -1)
                 _bulletInIndex++;
-             
+
             BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
             _bulletInside[_bulletInIndex] = bulletScript.EID;
             _bulletInIndex++;

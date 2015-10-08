@@ -14,7 +14,7 @@ public class BulletPath : Entity
     private Vector3 _dirManual;
     void Start()
     {
-        speed = speed * Random.Range(0.5F, 1.5F);
+       // speed = speed * Random.Range(0.8F, 1.5F);
     }
 
     void FixedUpdate()
