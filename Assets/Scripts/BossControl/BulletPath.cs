@@ -8,8 +8,9 @@ public class BulletPath : Entity
     public ushort id = 0;
     public GameObject Boss;
     public WorldState __WorldState;
-    
 
+    private bool _manually;
+    private Vector3 _dirVector;
     void Start()
     {
         speed = speed * Random.Range(0.5F, 1.5F);
@@ -18,54 +19,42 @@ public class BulletPath : Entity
     void FixedUpdate()
     {
         Vector3 differential = this.transform.position;
-        Vector3 dirVector = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1)) * Vector3.up;
-        transform.Translate(dirVector * speed);
+        if (!_manually)
+            _dirVector = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1)) * Vector3.up;
+        transform.Translate(_dirVector * speed);
         differential = this.transform.position - differential;
+
         __WorldState.updateEntitie(transform.position, differential, transform.rotation, EID, gameObject.activeSelf, speed);
+
         Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);
         if (pos.x >= 1 || pos.y >= 1 || pos.x <= 0 || pos.y <= 0.1)
             reset();
-        /*
-        //  Debug.Log("Before : " + transform.position);
-        //transform.Translate(Vector3.right * Time.deltaTime * speed);
-        Vector3 differential = this.transform.position;
+    }
 
-        Vector3 dirVector = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1)) * Vector3.up;
-        transform.Translate(dirVector * speed);
 
-        differential = this.transform.position - differential;
-
-        __WorldState.updateEntitie(transform.position, differential, transform.rotation, EID, gameObject.activeSelf, speed);
-        var pos = Camera.main.WorldToViewportPoint(transform.position);
-        if (pos.x >= 1 || pos.y >= 1 || pos.x <= 0 || pos.y <= 0.1)
-            reset();
-        //Debug.Log(EID);*/
+    public void playManually(Vector3 direction)
+    {
+        gameObject.SetActive(true);
+        transform.position = Boss.transform.position;
+        _dirVector = direction;
+        _manually = true;
     }
 
     public void reset()
     {
-        //m_direction = Random.Range(0, 360);
-        //transform.position = new Vector3(0, 3, 0);
-        //transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
         gameObject.SetActive(false);
     }
 
     public void play(int direction)
     {
-        
+        _manually = false;
         m_direction = direction;
+
         gameObject.SetActive(true);
         transform.position = Boss.transform.position;
         transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
-        Vector3 differential = this.transform.position;
-        Vector3 dirVector = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1)) * Vector3.up;
-        differential = this.transform.position - differential;
-
-        Vector3 _direction = new Vector3(transform.position.x + Mathf.Cos(m_direction * Mathf.PI / 180.0f), transform.position.y + Mathf.Sin(m_direction * Mathf.PI / 180.0f), 0);
-        Vector3 dir = _direction - transform.position;
-
-        Debug.DrawRay(transform.position, dir, Color.red);
-
+        
+        Vector3 differential = Vector3.zero;
         __WorldState.updateEntitie(transform.position, differential, transform.rotation, EID, gameObject.activeSelf, speed);
     }
 

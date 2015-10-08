@@ -11,6 +11,7 @@ public class BulletFire : MonoBehaviour
     [SerializeField]
     private Pool _pool;
     private int m_ManualLaunched;
+    public GameObject Boss;
 
     void Start()
     {
@@ -34,17 +35,21 @@ public class BulletFire : MonoBehaviour
                     m_ManualLaunched++;
                 else
                     m_ManualLaunched = 0;
-                var v3 = Input.mousePosition;
-                v3.z = 10.0F;
-                v3 = Camera.main.ScreenToWorldPoint(v3);
-                //Debug.Log(v3);
-                Vector3 test = v3 -transform.position;
-                Debug.Log(test);
+               
 
-                m_Bullets_Script[m_ManualLaunched].play((int) Vector3.Angle(transform.up,test));
+                var pos = Input.mousePosition;
+                pos.z = Boss.transform.position.z - Camera.main.transform.position.z;
+                pos = Camera.main.ScreenToWorldPoint(pos);
+
+                Vector3 diff = pos - Boss.transform.position;
+                diff.Normalize();
+
+                float angleRad = Mathf.Atan2(diff.y, diff.x);
+                Vector3 _direction = new Vector3(Boss.transform.position.x + Mathf.Cos(angleRad), Boss.transform.position.y + Mathf.Sin(angleRad), 0);
+                Vector3 dir = Boss.transform.position - _direction;
+                Debug.DrawRay(Boss.transform.position, -dir.normalized * 5, Color.red);
+                m_Bullets_Script[m_ManualLaunched].playManually(-dir);
             }
-
-
 
     }
 
