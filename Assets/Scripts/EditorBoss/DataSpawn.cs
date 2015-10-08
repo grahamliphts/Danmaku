@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
-public class DataSpawn : ScriptableObject
+public class DataSpawn : MonoBehaviour
 {
-    [System.Serializable]
     public struct Spawn
     {
         public Vector2 position;
@@ -12,5 +10,15 @@ public class DataSpawn : ScriptableObject
     }
 
     public Spawn[] spawnDatas;
+    public static DataSpawn Instance;
 
+    public void Start()
+    {
+        if (!Instance)
+        {
+            spawnDatas = new Spawn[2];
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
 }

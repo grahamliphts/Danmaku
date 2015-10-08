@@ -12,24 +12,22 @@ public class AddSpawnPoint : MonoBehaviour {
 
 	void Start ()
     {
-        if (data.spawnDatas[0].isSet)
+        if (DataSpawn.Instance.spawnDatas[0].isSet)
         {
             poolBoss1.SetActive(true);
-            poolBoss1.transform.position = data.spawnDatas[0].position;
+            poolBoss1.transform.position = DataSpawn.Instance.spawnDatas[0].position;
         }
            
         else
             poolBoss1.SetActive(false);
-        if (data.spawnDatas[1].isSet)
+        if (DataSpawn.Instance.spawnDatas[1].isSet)
         {
             poolBoss2.SetActive(true);
-            poolBoss2.transform.position = data.spawnDatas[1].position;
+            poolBoss2.transform.position = DataSpawn.Instance.spawnDatas[1].position;
         }
            
         else
             poolBoss2.SetActive(false);
-
-        
     }
 	
 }

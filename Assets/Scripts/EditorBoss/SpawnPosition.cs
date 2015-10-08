@@ -9,12 +9,10 @@ public class SpawnPosition : MonoBehaviour
     private DataSpawn.Spawn spawn1Struct;
     private DataSpawn.Spawn spawn2Struct;
 
-    public DataSpawn data;
-
     public void Save()
     {
-        DataSpawn.Spawn spawn1Struct = new DataSpawn.Spawn();
-        DataSpawn.Spawn spawn2Struct = new DataSpawn.Spawn();
+        spawn1Struct = new DataSpawn.Spawn();
+        spawn2Struct = new DataSpawn.Spawn();
 
         spawn1Struct.isSet = false;
         spawn2Struct.isSet = false;
@@ -31,8 +29,8 @@ public class SpawnPosition : MonoBehaviour
             spawn2Struct.isSet = true;
         }
 
-        data.spawnDatas[0] = spawn1Struct;
-        data.spawnDatas[1] = spawn2Struct;
+        DataSpawn.Instance.spawnDatas[0] = spawn1Struct;
+        DataSpawn.Instance.spawnDatas[1] = spawn2Struct;
 
         Application.LoadLevel("MenuScene");
     }
