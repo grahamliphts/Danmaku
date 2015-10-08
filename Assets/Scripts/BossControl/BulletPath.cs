@@ -10,7 +10,10 @@ public class BulletPath : Entity
     public WorldState __WorldState;
     
 
-
+    void Start()
+    {
+        speed = speed * Random.Range(0.5F, 1.5F);
+    }
 
     void FixedUpdate()
     {
@@ -49,6 +52,7 @@ public class BulletPath : Entity
 
     public void play(int direction)
     {
+        
         m_direction = direction;
         gameObject.SetActive(true);
         transform.position = Boss.transform.position;
