@@ -27,7 +27,7 @@ public class BulletPath : Entity
         }
         else
         {
-            transform.Translate(_dirManual * speed);
+            transform.Translate(_dirManual * 0.1F);
         }
         differential = this.transform.position - differential;
 
