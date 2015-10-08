@@ -3,12 +3,6 @@ using System.Collections;
 
 public class PlayerController : Entity
 {
-    private int _movementSpeed = 4;
-
-    private float _dist;
-    private float _leftBorder, _rightBorder, _upBorder, _bottomBorder;
-  
-
     void Update()
     {
         Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position);

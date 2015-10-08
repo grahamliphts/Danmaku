@@ -15,7 +15,6 @@ public class PlayerShoot : MonoBehaviour
     public float fireRate;
     private float _nextFire;
     int _count;
-    bool _shooting;
 
     void Start()
     {
@@ -44,16 +43,6 @@ public class PlayerShoot : MonoBehaviour
                 projPlayerScript[_count].play();
                 _count++;
             }
-        }
-    }
-
-
-    IEnumerator Shoot(int spawn)
-    {
-        while (true)
-        {
-           
-            yield return new WaitForSeconds(0.02f);
         }
     }
 }
