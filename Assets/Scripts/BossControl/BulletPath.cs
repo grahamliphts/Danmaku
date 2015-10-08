@@ -6,7 +6,7 @@ public class BulletPath : Entity
     private int m_direction;
     public float speed = 0.1f;
     public ushort id = 0;
-    public GameObject Boss;
+    public GameObject Spawn;
     public WorldState __WorldState;
 
     private bool _manually;
@@ -42,7 +42,7 @@ public class BulletPath : Entity
     public void playManually(Vector3 direction)
     {
         gameObject.SetActive(true);
-        transform.position = Boss.transform.position;
+        transform.position = Spawn.transform.position;
         transform.rotation = Quaternion.identity;
         _dirManual = direction;
         _manually = true;
@@ -59,7 +59,7 @@ public class BulletPath : Entity
         m_direction = direction;
 
         gameObject.SetActive(true);
-        transform.position = Boss.transform.position;
+        transform.position = Spawn.transform.position;
         transform.rotation = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1));
         
         Vector3 differential = Vector3.zero;
