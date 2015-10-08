@@ -75,12 +75,12 @@ public class BulletFire : MonoBehaviour
                 spawn++;
                 if (m_direction < 320 && isright)
                 {
-                    m_direction += 5;
+                    m_direction += 10;
                 }
                 else
                 {
                     isright = false;
-                    m_direction -= 5;
+                    m_direction -= 10;
                     if (m_direction < 220)
                         isright = true;
                 }
@@ -174,12 +174,12 @@ public class BulletFire : MonoBehaviour
                 }
                 if (m_direction < 360 && isright)
                 {
-                    m_direction += 5;
+                    m_direction += 20;
                 }
                 else
                 {
                     isright = false;
-                    m_direction -= 5;
+                    m_direction -= 20;
                     if (m_direction < 160)
                         isright = true;
                 }
@@ -192,7 +192,7 @@ public class BulletFire : MonoBehaviour
     {
         //Debug.Log("Ask for Fire change");
         StopAllCoroutines();
-        StartCoroutine(explodeFire(bullets.Length,0.5F));
+       // StartCoroutine(explodeFire(bullets.Length,0.5F));
         //Debug.Log("Old Fire Stoped");
         switch (mode)
         {
@@ -243,7 +243,7 @@ public class BulletFire : MonoBehaviour
                Debug.Log("Explode");
             if (bullets[spawn].activeSelf == false)
             {
-                for (int i = 45; i < 135; i += 5)
+                for (int i = 45; i < 135; i += 10)
                 {
                     if (spawn >= max)
                         spawn = 0;
