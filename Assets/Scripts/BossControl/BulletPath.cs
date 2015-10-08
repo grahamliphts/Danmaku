@@ -11,6 +11,7 @@ public class BulletPath : Entity
 
     private bool _manually;
     private Vector3 _dirVector;
+    private Vector3 _dirManual;
     void Start()
     {
         speed = speed * Random.Range(0.5F, 1.5F);
@@ -20,8 +21,14 @@ public class BulletPath : Entity
     {
         Vector3 differential = this.transform.position;
         if (!_manually)
+        {
             _dirVector = Quaternion.AngleAxis(m_direction, new Vector3(0, 0, 1)) * Vector3.up;
-        transform.Translate(_dirVector * speed);
+            transform.Translate(_dirVector * speed);
+        }
+        else
+        {
+            transform.Translate(_dirManual * speed);
+        }
         differential = this.transform.position - differential;
 
         __WorldState.updateEntitie(transform.position, differential, transform.rotation, EID, gameObject.activeSelf, speed);
@@ -36,7 +43,8 @@ public class BulletPath : Entity
     {
         gameObject.SetActive(true);
         transform.position = Boss.transform.position;
-        _dirVector = direction;
+        transform.rotation = Quaternion.identity;
+        _dirManual = direction;
         _manually = true;
     }
 
