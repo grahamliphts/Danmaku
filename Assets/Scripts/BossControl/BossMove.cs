@@ -26,19 +26,19 @@ public class BossMove : MonoBehaviour
             if (m_CamPos.x <= 0.71 && goRight)
             {
                 transform.Translate(new Vector3(1, 0, 0) * 0.05F);
-                if(wave1.gameObject.activeSelf)
+               /* if(wave1.gameObject.activeSelf)
                     wave1.Translate(new Vector3(1, 0, 0) * 0.05F);
                 if (wave2.gameObject.activeSelf)
-                    wave2.Translate(new Vector3(1, 0, 0) * 0.05F);
+                    wave2.Translate(new Vector3(1, 0, 0) * 0.05F);*/
             }
                
             else if (m_CamPos.x >= 0.3)
             {
                 transform.Translate(new Vector3(-1, 0, 0) * 0.05F);
-                if (wave1.gameObject.activeSelf)
+               /* if (wave1.gameObject.activeSelf)
                     wave1.Translate(new Vector3(-1, 0, 0) * 0.05F);
                 if (wave2.gameObject.activeSelf)
-                    wave2.Translate(new Vector3(-1, 0, 0) * 0.05F);
+                    wave2.Translate(new Vector3(-1, 0, 0) * 0.05F);*/
                 goRight = false;
             }
             else
