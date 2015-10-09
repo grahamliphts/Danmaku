@@ -17,8 +17,10 @@ public class LoadSprite : MonoBehaviour
             newSprite= Resources.Load<Sprite>("enemyGreen");
         else if (color == (int)Color.Orange)
             newSprite = Resources.Load<Sprite>("enemyRed");
-        if(newSprite != null)
+        if (newSprite != null)
+        {
             spriteBoss.sprite = newSprite;
-
+            DataSpawn.Instance.ressourceName = newSprite.name;
+        }
     }
 }

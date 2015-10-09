@@ -10,6 +10,8 @@ public class DataSpawn : MonoBehaviour
     }
 
     public Spawn[] spawnDatas;
+    public string ressourceName;
+
     public static DataSpawn Instance;
 
     public void Start()

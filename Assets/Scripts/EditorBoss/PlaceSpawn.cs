@@ -6,11 +6,9 @@ public class PlaceSpawn : MonoBehaviour
 {
     public bool spawn1;
     public bool spawn2;
-    public bool spawn3;
 
     public SpriteRenderer sprite1;
     public SpriteRenderer sprite2;
-    public SpriteRenderer sprite3;
 
     public RawImage square;
 
@@ -19,7 +17,6 @@ public class PlaceSpawn : MonoBehaviour
     {  
         spawn1 = false;
         spawn2 = false;
-        spawn3 = false;
     }
 
 	public void Spawn(int nb)
@@ -28,20 +25,13 @@ public class PlaceSpawn : MonoBehaviour
         {
             spawn1 = true;
             spawn2 = false;
-            spawn3 = false;
         }
         else if (nb == 2)
         {
             spawn1 = false;
             spawn2 = true;
-            spawn3 = false;
         }
-        else if (nb == 3)
-        {
-            spawn1 = false;
-            spawn2 = false;
-            spawn3 = true;
-        }
+
     }
 
     public void Click()
@@ -59,11 +49,5 @@ public class PlaceSpawn : MonoBehaviour
             sprite2.transform.position = mousePos;
             sprite2.transform.parent = null;
         }
-        else if (spawn3)
-        {
-            sprite3.transform.position = mousePos;
-            sprite3.transform.parent = null;
-        }
-
     }
 }

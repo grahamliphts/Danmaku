@@ -10,10 +10,14 @@ public class BossLife : MonoBehaviour
     private int _damage;
     [SerializeField]
     private Renderer sprite;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
         _life = 100;
+        if(DataSpawn.Instance.ressourceName != "")
+            spriteRenderer.sprite = Resources.Load<Sprite>(DataSpawn.Instance.ressourceName);
     }
 
     void OnTriggerEnter2D(Collider2D col)
