@@ -25,7 +25,7 @@ public class AlgorithmIA : MonoBehaviour
     //private List<int> _idBulletsActive;
     private int[] _bulletInside;
     private int _bulletInIndex = -1;
-    private int _explo = 6;
+    private int _explo = 5;
 
     private _gridData[] _gridOuvert;
     private int _nbGrid = 0;
@@ -50,14 +50,11 @@ public class AlgorithmIA : MonoBehaviour
     void FixedUpdate()
     {
         // Deplacement 0.1 / move
-        /*if (bossPosition.goRight)
-            _cible[0] = bossPosition.transform.position.x + 1;
-        else
-            _cible[0] = bossPosition.transform.position.x - 1;*/
-        // _cible[0] = bossPosition.transform.position.x;
+
         Vector3 Yfire = transform.position;
         Vector3 bossProj;
         int increment = 0;
+
         while (Yfire.y < bossPosition.transform.position.y)
         {
             Yfire += Vector3.up * 0.7F;
@@ -144,6 +141,7 @@ public class AlgorithmIA : MonoBehaviour
         Vector3 cameraPos = Camera.main.WorldToViewportPoint(postPos);
         bool access = false;
 
+        #region Lock In Screen
         switch (move)
         {
             case "U":
@@ -179,6 +177,7 @@ public class AlgorithmIA : MonoBehaviour
                     access = true;
                 break;
         }
+        #endregion
 
         if (access && (detectPostCollision(postPos, _gridOuvert[indexClose].iter) == 0))
         {
@@ -219,8 +218,8 @@ public class AlgorithmIA : MonoBehaviour
         Vector3 bulletPostPosition;
         Vector3 differential = projectile.direction;
 
-        // Radius IA = 0.4u
-        // Radius Projectile = 0.2u
+        // Radius IA = 0.1u
+        // Radius Projectile = 0.1u
 
         bulletPostPosition = projectile.position + differential * iter;
         float CompX = posPlayerIA.x - bulletPostPosition.x;
@@ -297,10 +296,6 @@ public class AlgorithmIA : MonoBehaviour
     {
         if (bullet.tag == "projEnemy")
         {
-            /*
-            BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
-            _idBulletsActive.Add(bulletScript.EID);*/
-
             if (_bulletInIndex == -1)
                 _bulletInIndex++;
 
@@ -314,10 +309,6 @@ public class AlgorithmIA : MonoBehaviour
     {
         if (bullet.tag == "projEnemy")
         {
-            /*
-            BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
-            _idBulletsActive.Remove(bulletScript.EID);*/
-
             BulletPath bulletScript = bullet.gameObject.GetComponent<BulletPath>();
             bool flag = false;
             for (int i = 0; i < _bulletInIndex; i++)
