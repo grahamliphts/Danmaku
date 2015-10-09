@@ -7,7 +7,7 @@ public class PathPlayerShoot : MonoBehaviour
     private GameObject _player;
     private int _speed = 4;
 
-    void Update()
+    void FixedUpdate()
     {
         //Debug.Log("Update");
         transform.Translate(Vector2.up * 0.8F);
