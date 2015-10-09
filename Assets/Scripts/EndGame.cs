@@ -11,6 +11,10 @@ public class EndGame : MonoBehaviour
     public BossLife lifeBoss;
     public PlayerLife lifePlayer;
 
+    public GameObject player;
+    public GameObject boss;
+    public GameObject playerShoot;
+
     // Update is called once per frame
     void Update ()
     {
@@ -23,6 +27,9 @@ public class EndGame : MonoBehaviour
 
     IEnumerator CloseParty(string text)
     {
+        player.SetActive(false);
+        boss.SetActive(false);
+        playerShoot.SetActive(false);
         imageClose.gameObject.SetActive(true);
         closeInfo.text = text;
 
